@@ -476,7 +476,7 @@ class MainActivity : AppCompatActivity() {
 
             // Create a reference to 'images/mountains.jpg'
 
-            val mountainImagesRef = storageRef.child(""+System.currentTimeMillis()+".jpg")
+            val mountainImagesRef = storageRef.child(""+System.currentTimeMillis()+".jpg");
 
 
 
