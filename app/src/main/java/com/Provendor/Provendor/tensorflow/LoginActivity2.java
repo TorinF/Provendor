@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
+import com.Provendor.Provendor.MainActivity;
 import com.Provendor.Provendor.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 
@@ -27,7 +28,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.provendor.MainActivity;
 
 
 public class LoginActivity2 extends AppCompatActivity {

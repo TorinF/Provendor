@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.Provendor.Provendor.MainActivity;
 import com.Provendor.Provendor.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 
@@ -36,7 +37,7 @@ import com.google.firebase.auth.AuthResult;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.jaeger.library.StatusBarUtil;
-import com.provendor.MainActivity;
+
 
 
 public class loginactivity extends AppCompatActivity {

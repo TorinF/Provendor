@@ -1,4 +1,4 @@
-package com.provendor
+package com.Provendor.Provendor
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -69,8 +69,7 @@ import com.Provendor.Provendor.tensorflow.Classifier
 import com.Provendor.Provendor.tensorflow.TensorFlowImageClassifier
 import com.wonderkiln.camerakit.CameraKitImage
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.launch
+
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -78,9 +77,16 @@ import com.google.firebase.auth.UserInfo
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+
+
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
+import kotlin.coroutines.CoroutineContext
 
 
 class MainActivity : AppCompatActivity() {
@@ -91,6 +97,7 @@ class MainActivity : AppCompatActivity() {
         private var mStorageRef: StorageReference? = null
         private var mDatabaseRef: DatabaseReference? = null
         val uploady = Upload()
+         var imageurl =""
         val db = FirebaseFirestore.getInstance()
         private var time = ""
 
@@ -109,7 +116,7 @@ class MainActivity : AppCompatActivity() {
 
     private var classifier: Classifier? = null
     private var initializeJob: Job? = null
-
+    private lateinit var job: Job
 
 
     // Shows the system bars by removing all the flags
@@ -359,6 +366,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.Provendor.Provendor.R.layout.activity_main)
+
+        job = Job()
+
         mStorageRef = FirebaseStorage.getInstance().getReference("uploads")
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads")
 
@@ -409,44 +419,48 @@ class MainActivity : AppCompatActivity() {
         runOnUiThread {
             setVisibilityOnCaptured(true)
             if (results.isEmpty()) {
-                textResult.text=  getString(com.Provendor.Provendor.R.string.result_no_name)
+                textResult.text = getString(com.Provendor.Provendor.R.string.result_no_name)
                 textResult2.text = getString(com.Provendor.Provendor.R.string.result_no_hero_found)
                 uploady.setDisease("None")
                 uploady.setConfidence(0.0f)
             } else {
                 val hero = results[0].title
                 val confidence = results[0].confidence
-                if (confidence>.7){
+                if (confidence > .7) {
                     uploady.setDisease(hero)
                     uploady.setConfidence(confidence)
-                }
-                else{
+                } else {
                     uploady.setDisease("None")
                     uploady.setConfidence(0.0f)
                 }
                 textResult.text = when {
-                    ((confidence > .7))->getString(com.Provendor.Provendor.R.string.Name, hero)
+                    ((confidence > .7)) -> getString(com.Provendor.Provendor.R.string.Name, hero)
 
 
                     else -> getString(R.string.result_no_name)
                 }
-                 textResult2.text = when {
-                    ((confidence > .7))->getString(com.Provendor.Provendor.R.string.result_maybe_hero_found, hero)
+                textResult2.text = when {
+                    ((confidence > .7)) -> getString(com.Provendor.Provendor.R.string.result_maybe_hero_found, hero)
 
 
-           else -> getString(R.string.result_no_hero_found)
-                 }
+                    else -> getString(R.string.result_no_hero_found)
+                }
 
             }
 
-    }
-        time = "" +System.currentTimeMillis()
-        db.collection("users").document(Useruid).collection("diagnoses").document(time).set(uploady)
-        val intent = Intent(this, Diagnosis::class.java)
-// To pass any data to next activity
-        intent.putExtra("key", uploady)
-// start your next activity
-        startActivity(intent)
+        }
+        val user = FirebaseAuth.getInstance().currentUser
+
+        if (user != null) {
+
+            user?.let {
+                Useruid = user.uid
+            }
+            time = "" + System.currentTimeMillis()
+            db.collection("users").document(Useruid).collection("diagnoses").document(time).set(uploady)
+
+        }
+
     }
 
     private fun showCapturedImage(bitmap: Bitmap?) {
@@ -522,8 +536,10 @@ class MainActivity : AppCompatActivity() {
             }).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     downloadUri = task.result
+                    imageurl= downloadUri.toString()
                     uploady.setImageUrl(downloadUri.toString())
                     uploady.setdate()
+
                 } else {
                     // Handle failures
                     // ...
@@ -661,6 +677,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+
     private fun setVisibilityOnCaptured(isDone: Boolean) {
         buttonRecognize.isEnabled = isDone
         if (isDone) { ///After processing is done
@@ -683,21 +701,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initializeTensorClassifier() {
-        this.initializeJob = launch {
+       GlobalScope.launch {
             try {
                 classifier = TensorFlowImageClassifier.create(
                         assets, MODEL_FILE, LABEL_FILE, INPUT_WIDTH, INPUT_HEIGHT,
                         IMAGE_MEAN, IMAGE_STD, INPUT_NAME, OUTPUT_NAME)
 
                 runOnUiThread {
-                  makevisible()
+                    makevisible()
                 }
             } catch (e: Exception) {
                 throw RuntimeException("Error initializing TensorFlow!", e)
             }
         }
     }
-
+     val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
     private fun clearTensorClassifier() {
         initializeJob?.cancel()
         classifier?.close()
@@ -714,7 +733,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        job.cancel()
         super.onDestroy()
+
         clearTensorClassifier()
     }
 
