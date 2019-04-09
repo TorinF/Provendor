@@ -3,15 +3,17 @@ package com.Provendor.Provendor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.firestore.PropertyName;
+
 import java.io.Serializable;
 import java.util.Calendar;
 
 public class Upload implements Parcelable {
-    private String mName;
-    private String mImageUrl;
-    private String mdisease;
-    private String mdate;
-    private float mconfidence;
+    private String name;
+    private String imageUrl;
+    private String disease;
+    private String date;
+    private float confidence;
     @Override
     public int describeContents() {
         return 0;
@@ -20,11 +22,11 @@ public class Upload implements Parcelable {
     // write your object's data to the passed-in Parcel
     @Override
     public void writeToParcel(Parcel out, int flags) {
-        out.writeFloat(mconfidence);
-        out.writeString(mName);
-        out.writeString(mImageUrl);
-        out.writeString(mdisease);
-        out.writeString(mdate);
+        out.writeFloat(confidence);
+        out.writeString(name);
+        out.writeString(imageUrl);
+        out.writeString(disease);
+        out.writeString(date);
     }
 
     // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
@@ -40,59 +42,60 @@ public class Upload implements Parcelable {
 
     // example constructor that takes a Parcel and gives you an object populated with it's values
     private Upload(Parcel in) {
-        mconfidence = in.readInt();
-        mName  = in.readString();
-        mImageUrl  = in.readString();
-        mdisease = in.readString();
-        mdate = in.readString();
+        confidence = in.readInt();
+        name  = in.readString();
+        imageUrl  = in.readString();
+        disease = in.readString();
+        date = in.readString();
 
     }
 
     public Upload() {
-        mName= ""; //empty constructor needed
+        name= ""; //empty constructor needed
     }
 
-    public Upload(String name, String imageUrl, String disease, float confidence) {
+    public Upload(String namey, String imageUrly, String diseasey, float confidencey) {
         if (name.trim().equals("")) {
             name = "No Name";
         }
-        mdisease=disease;
-        mdate=java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
-        mName = name;
-        mImageUrl = imageUrl;
-        mconfidence=confidence;
+        disease=diseasey;
+        date=java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+        name = namey;
+        imageUrl = imageUrly;
+        confidence=confidencey;
     }
 
     public String getName() {
-        return mName;
+        return name;
     }
+    @PropertyName("disease")
     public String getDisease() {
-        return mdisease;
+        return disease;
     }
     public float getConfidence() {
-        return mconfidence;
+        return confidence;
     }
     public String getDate() {
-        return mdate;
+        return date;
     }
-    public void setName(String name) {
-        mName = name;
+    public void setName(String namey) {
+        name = namey;
     }
     public void setdate() {
-        mdate=java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+        date=java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
     }
-    public void setDisease(String disease) {
-        mdisease = disease;
+    public void setDisease(String diseasey) {
+        disease = diseasey;
     }
-    public void setConfidence(float confidence) {
-        mconfidence = confidence;
+    public void setConfidence(float confidencey) {
+        confidence = confidencey;
     }
 
     public String getImageUrl() {
-        return mImageUrl;
+        return imageUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
-        mImageUrl = imageUrl;
+    public void setImageUrl(String imageUrly) {
+        imageUrl = imageUrly;
     }
 }

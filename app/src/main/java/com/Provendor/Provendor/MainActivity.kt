@@ -1,6 +1,9 @@
 package com.Provendor.Provendor
 
 import android.content.Intent
+import com.bumptech.glide.annotation.GlideModule
+import com.bumptech.glide.module.AppGlideModule
+
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
@@ -60,13 +63,16 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import android.view.Window
 import android.view.WindowManager
+import android.widget.ImageView
 import com.Provendor.Provendor.R
 import android.widget.Toast;
 import com.Provendor.Provendor.Diagnosis
 import com.Provendor.Provendor.R.id.cameraView
+import com.Provendor.Provendor.R.id.imageCaptured
 import com.Provendor.Provendor.Upload
 import com.Provendor.Provendor.tensorflow.Classifier
 import com.Provendor.Provendor.tensorflow.TensorFlowImageClassifier
+import com.bumptech.glide.Glide
 import com.wonderkiln.camerakit.CameraKitImage
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -96,13 +102,15 @@ class MainActivity : AppCompatActivity() {
         private var  downloadUri:Uri? = null
         private var mStorageRef: StorageReference? = null
         private var mDatabaseRef: DatabaseReference? = null
-        val uploady = Upload()
+         public  var  uploady = Upload()
          var imageurl =""
         val db = FirebaseFirestore.getInstance()
         private var time = ""
-
+        public var meme:Upload?=Upload()
         private val mUploadTask: StorageTask<*>? = null
         private var Useruid= ""
+        lateinit var imageView: ImageView
+        private var httpsReference:StorageReference?= null
         private const val TAG = "MainActivity"
         private const val INPUT_WIDTH = 300
         private const val INPUT_HEIGHT = 300
@@ -112,6 +120,8 @@ class MainActivity : AppCompatActivity() {
         private const val OUTPUT_NAME = "final_result"
         private const val MODEL_FILE = "file:///android_asset/hero_stripped_graph.pb"
         private const val LABEL_FILE = "file:///android_asset/hero_labels.txt"
+        public fun a() : Upload = uploady
+
     }
 
     private var classifier: Classifier? = null
@@ -130,6 +140,7 @@ class MainActivity : AppCompatActivity() {
                 or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
     }
+
     private fun includesForUploadFiles(bitmap: Bitmap?) {
 
         val storage = FirebaseStorage.getInstance()
@@ -319,7 +330,10 @@ class MainActivity : AppCompatActivity() {
 
 
 
+   runOnUiThread {
+            imageCaptured.setImageBitmap(bitmap)
 
+        }
 
 */
 
@@ -348,6 +362,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+
     private fun makeinvisible(){
         cameraView.visibility =View.GONE
         buttonRecognize.visibility = View.GONE
@@ -365,6 +380,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(com.Provendor.Provendor.R.layout.activity_main)
 
         job = Job()
@@ -374,7 +390,6 @@ class MainActivity : AppCompatActivity() {
 
         makeinvisible()
 
-        initializeTensorClassifier()
         buttonRecognize.setOnClickListener {
             setVisibilityOnCaptured(false)
             cameraView.captureImage {
@@ -382,6 +397,9 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+        initializeTensorClassifier()
+
+
         imageclose.setOnClickListener {
             imageCaptured.visibility = View.GONE ///After button is clicked, before it is done processing
             textResult.visibility = View.GONE
@@ -416,40 +434,24 @@ class MainActivity : AppCompatActivity() {
         //  store & retrieve this string to firebase
     }
     private fun showRecognizedResult(results: MutableList<Classifier.Recognition>) {
-        runOnUiThread {
-            setVisibilityOnCaptured(true)
-            if (results.isEmpty()) {
-                textResult.text = getString(com.Provendor.Provendor.R.string.result_no_name)
-                textResult2.text = getString(com.Provendor.Provendor.R.string.result_no_hero_found)
+
+
+        val user = FirebaseAuth.getInstance().currentUser
+        if (results.isEmpty()) {
+            uploady.setDisease("None")
+            uploady.setConfidence(0.0f)
+        }
+        else {
+            val hero = results[0].title
+            val confidence = results[0].confidence
+            if (confidence > .7) {
+                uploady.setDisease(hero)
+                uploady.setConfidence(confidence)
+            } else {
                 uploady.setDisease("None")
                 uploady.setConfidence(0.0f)
-            } else {
-                val hero = results[0].title
-                val confidence = results[0].confidence
-                if (confidence > .7) {
-                    uploady.setDisease(hero)
-                    uploady.setConfidence(confidence)
-                } else {
-                    uploady.setDisease("None")
-                    uploady.setConfidence(0.0f)
-                }
-                textResult.text = when {
-                    ((confidence > .7)) -> getString(com.Provendor.Provendor.R.string.Name, hero)
-
-
-                    else -> getString(R.string.result_no_name)
-                }
-                textResult2.text = when {
-                    ((confidence > .7)) -> getString(com.Provendor.Provendor.R.string.result_maybe_hero_found, hero)
-
-
-                    else -> getString(R.string.result_no_hero_found)
-                }
-
             }
-
         }
-        val user = FirebaseAuth.getInstance().currentUser
 
         if (user != null) {
 
@@ -458,10 +460,67 @@ class MainActivity : AppCompatActivity() {
             }
             time = "" + System.currentTimeMillis()
             db.collection("users").document(Useruid).collection("diagnoses").document(time).set(uploady)
+            val docRef = db.collection("users").document(Useruid).collection("diagnoses").document(time)
+          /*  docRef.get().addOnSuccessListener { documentSnapshot ->
+                meme = documentSnapshot.toObject(Upload::class.java)
+            }
+            val cool = meme!!.getImageUrl()
+*/
+
+
 
         }
 
-    }
+        val intent = Intent(this, Diagnosis::class.java)
+// To pass any data to next activity
+// start your next activity
+
+        startActivity(intent)
+        finish();
+          /*  runOnUiThread {
+
+
+                imageCaptured.visibility = View.GONE ///After button is clicked, before it is done processing
+                textResult.visibility = View.GONE
+                textResult2.visibility = View.GONE
+                cameraView.visibility =View.GONE
+                buttonRecognize.visibility =View.GONE
+                progressBar.visibility = View.GONE
+                imageclose.visibility = View.GONE
+                /*
+
+                if (results.isEmpty()) {
+                    textResult.text = meme!!.getDisease()
+                    textResult2.text = "Confidence: " + meme!!.getConfidence()
+                    GlideApp.with(this)
+                            .load(meme!!.getImageUrl()).into(findViewById<ImageView>(R.id.imageCaptured))
+                } else {
+                    val hero = results[0].title
+                    val confidence = results[0].confidence
+
+                    textResult.text = when {
+
+                        ((confidence > .7)) -> getString(com.Provendor.Provendor.R.string.Name, hero)
+
+
+                        else ->   uploady!!.getDisease()
+                    }
+                    textResult2.text = when {
+                        ((confidence >.7)) -> getString(com.Provendor.Provendor.R.string.result_maybe_hero_found, hero)
+
+
+                        else -> getString(R.string.result_no_hero_found)
+                    }
+                    GlideApp.with(this)
+                            .load(meme!!.getImageUrl()).into(findViewById<ImageView>(R.id.imageCaptured))
+                }
+
+*/            }
+*/
+
+
+        }
+
 
     private fun showCapturedImage(bitmap: Bitmap?) {
         val storage = FirebaseStorage.getInstance()
@@ -671,10 +730,7 @@ class MainActivity : AppCompatActivity() {
   */
 
 
-        runOnUiThread {
-            imageCaptured.setImageBitmap(bitmap)
 
-        }
     }
 
 
@@ -740,3 +796,5 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
+
+

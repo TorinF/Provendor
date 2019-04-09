@@ -1,28 +1,20 @@
 package com.Provendor.Provendor;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import android.widget.TextView;
-import org.json.JSONException;
-
-import static com.Provendor.Provendor.MainActivity.imageView;
-import static com.Provendor.Provendor.MainActivity.storage;
 
 
-public class Diagnosis extends AppCompatActivity {
+public class DiagnosisClick extends AppCompatActivity {
     FirebaseStorage storage = FirebaseStorage.getInstance();
     Upload meme;
-     ImageButton button;
+    ImageButton button;
     TextView textElement;
     ImageView imageView;
     @Override
@@ -30,8 +22,7 @@ public class Diagnosis extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diagnosis);
-meme= MainActivity.Companion.a();
-
+meme= Diseaselist.currentUpload;
  imageView= (findViewById(R.id.imageCaptured));
 
                 GlideApp.with(this /* context */)
@@ -42,7 +33,8 @@ meme= MainActivity.Companion.a();
 
        textElement = (TextView)findViewById(R.id.textResult);
         textElement.setText(meme.getDisease());
-         button = (ImageButton)findViewById(R.id.imageclose);
+
+        button = (ImageButton)findViewById(R.id.imageclose);
         button.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -51,13 +43,12 @@ meme= MainActivity.Companion.a();
 
                 if (v == button){
 
-                    startActivity(new Intent(Diagnosis.this, Diseaselist.class));
+                    startActivity(new Intent(DiagnosisClick.this, Diseaselist.class));
                 }
 
             }
 
         });
-
 
 // ImageView in your Activity
 

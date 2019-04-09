@@ -17,6 +17,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
+import com.Provendor.Provendor.Diagnosis;
+import com.Provendor.Provendor.Diseaselist;
 import com.Provendor.Provendor.MainActivity;
 import com.Provendor.Provendor.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -110,7 +112,7 @@ public class LoginActivity2 extends AppCompatActivity {
 
                             finish();
 
-                            startActivity(new Intent(LoginActivity2.this, MainActivity.class));
+                            startActivity(new Intent(LoginActivity2.this, Diseaselist.class));
 
 
                         }else {
