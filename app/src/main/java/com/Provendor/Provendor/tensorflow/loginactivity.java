@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.Provendor.Provendor.Diseaselist;
 import com.Provendor.Provendor.MainActivity;
 import com.Provendor.Provendor.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -161,7 +162,7 @@ public class loginactivity extends AppCompatActivity {
 
                                 finish();
 
-                                startActivity(new Intent(loginactivity.this, MainActivity.class));
+                                startActivity(new Intent(loginactivity.this, Diseaselist.class));
 
 
                             }else{

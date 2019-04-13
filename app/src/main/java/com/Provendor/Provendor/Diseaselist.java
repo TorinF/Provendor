@@ -7,10 +7,14 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.auth.User;
 import com.google.firebase.firestore.core.View;
+import com.google.firebase.storage.FirebaseStorage;
 
 public class Diseaselist extends AppCompatActivity {
     private TextView textView;
@@ -32,7 +37,9 @@ public class Diseaselist extends AppCompatActivity {
     private Query mChartsQuery;
     private RecyclerView mRecycler;
     public static  Upload currentUpload;
+    private ImageView imageView;
     private FirebaseAuth mAuth;
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
     private FirestoreRecyclerAdapter<Upload, ProductViewHolder> adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +60,7 @@ public class Diseaselist extends AppCompatActivity {
 
 
         Query query = rootRef.collection("users").document(useruid).collection("diagnoses")
-                .orderBy("disease", Query.Direction.ASCENDING);
+                .orderBy("time1", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<Upload> options = new FirestoreRecyclerOptions.Builder<Upload>()
                     .setQuery(query, Upload.class)
@@ -68,8 +75,11 @@ public class Diseaselist extends AppCompatActivity {
             @NonNull
             @Override
             public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                LayoutInflater inflater = getLayoutInflater();
+                LinearLayout mainLayout = (LinearLayout) findViewById(R.id.linear);
+                android.view.View myLayout = inflater.inflate(R.layout.recyclerview,mainLayout, false);
                android.view.View views = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_diseaselist, parent, false);
-                return new ProductViewHolder(views);
+                return new ProductViewHolder(myLayout);
 
             }
         };
@@ -111,6 +121,13 @@ public class Diseaselist extends AppCompatActivity {
             adapter.stopListening();
         }
     }
+    protected void meme(final Upload productName){
+        GlideApp.with(this /* context */)
+
+                .load(storage.getReferenceFromUrl(productName.getImageUrl()))
+
+                .into(imageView);
+    }
     private class ProductViewHolder extends RecyclerView.ViewHolder {
         private android.view.View view;
 
@@ -123,6 +140,12 @@ public class Diseaselist extends AppCompatActivity {
             CardView cview =view.findViewById(R.id.cardview);
             textView = view.findViewById(R.id.person_name);
             textView.setText(productName.getDisease());
+            imageView= (view.findViewById(R.id.person_photo));
+            TextView textViewy= view.findViewById(R.id.person_age);
+            textViewy.setText(productName.getDate());
+
+            meme(productName);
+
             cview.setOnClickListener(new android.view.View.OnClickListener() {
                 @Override
                 public void onClick(android.view.View view) {
