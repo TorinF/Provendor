@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import com.Provendor.Provendor.tensorflow.LoginActivity2;
 import com.Provendor.Provendor.tensorflow.loginactivity;
@@ -41,6 +42,7 @@ public class Diseaselist extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private FirestoreRecyclerAdapter<Upload, ProductViewHolder> adapter;
+    private ViewFlipper VF;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,11 +56,11 @@ public class Diseaselist extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.goodmeme);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-
+        VF = (ViewFlipper) findViewById(R.id.ViewFlipper01);
         recyclerView.setLayoutManager(llm);
 
 
-
+        /*Query query = citiesRef.where("state", "==", "CA");*/
         Query query = rootRef.collection("users").document(useruid).collection("diagnoses")
                 .orderBy("time1", Query.Direction.DESCENDING);
 
