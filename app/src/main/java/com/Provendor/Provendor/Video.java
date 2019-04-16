@@ -79,6 +79,10 @@ public class Video implements Parcelable {
 
     public Video() {
         name= "";
+        date=java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+        likes=0;
+        dislikes=0;
+        views=0;
         time=System.currentTimeMillis();
         //empty constructor needed
     }

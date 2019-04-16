@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context="com.Provendor.Provendor.UploadVideo"
+android:orientation="vertical">
+
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/btn"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="40dp"
+    android:textAppearance="?android:attr/textAppearanceLarge"
+    android:text="Select or Capture Video" />
+
+    <VideoView
+    android:layout_width="300dp"
+    android:layout_height="300dp"
+    android:layout_gravity="center"
+    android:layout_marginTop="20dp"
+    android:scaleType="fitXY"
+    android:src="@mipmap/ic_launcher"
+    android:id="@+id/yeet"/>
+
+    <Button
+        android:id="@+id/btn2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        android:text="Upload"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/fui_linkColor"
+        android:keepScreenOn="false"
+        android:max="100"
+        android:progress="0"
+        android:progressBackgroundTint="@color/fui_bgGitHub"
+        android:progressTint="@color/fui_bgGitHub"
+        android:visibility="invisible"
+        tools:progressBackgroundTint="@color/fui_bgGitHub"
+        tools:progressBackgroundTintMode="add" />
+
+</LinearLayout>

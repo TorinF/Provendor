@@ -21,6 +21,9 @@ import com.Provendor.Provendor.Diagnosis;
 import com.Provendor.Provendor.Diseaselist;
 import com.Provendor.Provendor.MainActivity;
 import com.Provendor.Provendor.R;
+import com.Provendor.Provendor.UploadVideo;
+import com.Provendor.Provendor.VideoView;
+import com.Provendor.Provendor.Videolists;
 import com.google.android.gms.tasks.OnCompleteListener;
 
 import com.google.android.gms.tasks.Task;
@@ -112,7 +115,7 @@ public class LoginActivity2 extends AppCompatActivity {
 
                             finish();
 
-                            startActivity(new Intent(LoginActivity2.this, Diseaselist.class));
+                            startActivity(new Intent(LoginActivity2.this, Videolists.class));
 
 
                         }else {

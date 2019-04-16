@@ -1,8 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:context="com.Provendor.Provendor.Videolists">
 
 
     <Button
@@ -39,7 +41,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/Popular"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="30dp"
             android:orientation="horizontal">
 
@@ -56,9 +58,10 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/PopularPaid"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginBottom="30dp"
-            android:layout_height="150dp">
+         >
 
         </android.support.v7.widget.RecyclerView>
         <TextView
@@ -73,7 +76,7 @@
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_marginBottom="30dp"
-            android:layout_height="150dp">
+            android:layout_height="wrap_content">
 
         </android.support.v7.widget.RecyclerView>
 
