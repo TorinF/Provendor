@@ -1,122 +1,104 @@
 package com.Provendor.Provendor;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import com.Provendor.Provendor.tensorflow.LoginActivity2;
-import com.Provendor.Provendor.tensorflow.loginactivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.auth.User;
-import com.google.firebase.firestore.core.View;
 import com.google.firebase.storage.FirebaseStorage;
 
-public class Diseaselist extends AppCompatActivity {
+public class VideoView extends AppCompatActivity {
+private PlayerView playerView;
+private SimpleExoPlayer player;
     private TextView textView;
     private FirebaseFirestore mDatabaseRef;
     private Button button;
     private Query mChartsQuery;
     private RecyclerView mRecycler;
-    public static  Upload currentUpload;
+    public static  Video currentUpload;
     private ImageView imageView;
     private FirebaseAuth mAuth;
-    private PlayerView playerView;
-    private SimpleExoPlayer player;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
-    private FirestoreRecyclerAdapter<Upload, ProductViewHolder> adapter;
+    private FirestoreRecyclerAdapter<Video, VideoView.ProductViewHolder> adapter;
     private ViewFlipper VF;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_diseaselist);
+        setContentView(R.layout.activity_video_view);
+        playerView=findViewById(R.id.player_view);
 
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         String useruid = currentUser.getUid();
-        RecyclerView recyclerView = findViewById(R.id.goodmeme);
+        RecyclerView recyclerView = findViewById(R.id.viewsundervideo);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        VF = (ViewFlipper) findViewById(R.id.ViewFlipper01);
         recyclerView.setLayoutManager(llm);
-        playerView=findViewById(R.id.video_view);
 
-/*when query*/
-        Query query = rootRef.collection("users").document(useruid).collection("diagnoses")
-                .orderBy("time1", Query.Direction.DESCENDING);
 
-        FirestoreRecyclerOptions<Upload> options = new FirestoreRecyclerOptions.Builder<Upload>()
-                    .setQuery(query, Upload.class)
+        /*when query*/
+        Query query =         rootRef.collection("videos").orderBy("views", Query.Direction.ASCENDING).limit(10);
+
+        FirestoreRecyclerOptions<Video> options = new FirestoreRecyclerOptions.Builder<Video>()
+                .setQuery(query, Video.class)
                 .build();
-        adapter = new FirestoreRecyclerAdapter<Upload, ProductViewHolder>(options) {
+        adapter = new FirestoreRecyclerAdapter<Video, VideoView.ProductViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull  ProductViewHolder holder, int position, @NonNull Upload productModel) {
+            protected void onBindViewHolder(@NonNull VideoView.ProductViewHolder holder, int position, @NonNull Video productModel) {
                 holder.setProductName(productModel);
 
             }
 
             @NonNull
             @Override
-            public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            public VideoView.ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 LayoutInflater inflater = getLayoutInflater();
-                LinearLayout mainLayout = (LinearLayout) findViewById(R.id.linear);
-                android.view.View myLayout = inflater.inflate(R.layout.recyclerview,mainLayout, false);
-               android.view.View views = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_diseaselist, parent, false);
-                return new ProductViewHolder(myLayout);
+                LinearLayout mainLayout = (LinearLayout) findViewById(R.id.linearvideos);
+                android.view.View myLayout = inflater.inflate(R.layout.videobelowsearch,mainLayout, false);
+                return new VideoView.ProductViewHolder(myLayout);
 
             }
         };
         recyclerView.setAdapter(adapter);
 
-        button = (Button)findViewById(R.id.button2);
-
-
-
-
-
-        button.setOnClickListener(new android.view.View.OnClickListener() {
-
-            @Override
-
-            public void onClick(android.view.View v) {
-
-                if (v == button){
-
-                    startActivity(new Intent(Diseaselist.this, MainActivity.class));
-                }
-
-            }
-
-        });
 
     }
     @Override
     protected void onStart() {
         super.onStart();
         adapter.startListening();
+        player= ExoPlayerFactory.newSimpleInstance(this,new DefaultTrackSelector());
+        playerView.setPlayer(player);
+        DefaultDataSourceFactory dataSourceFactory= new DefaultDataSourceFactory(this, Util.getUserAgent(this,"ExoPlayer"));
+        ExtractorMediaSource mediaSource=new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(Changename.currentVideo.getVideoUrl()));
+        player.prepare(mediaSource);
+        player.setPlayWhenReady(true);
     }
 
     @Override
@@ -126,8 +108,11 @@ public class Diseaselist extends AppCompatActivity {
         if (adapter != null) {
             adapter.stopListening();
         }
+        playerView.setPlayer(null);
+        player.release();
+        player=null;
     }
-    protected void meme(final Upload productName){
+    protected void meme(final Video productName){
         GlideApp.with(this /* context */)
 
                 .load(storage.getReferenceFromUrl(productName.getImageUrl()))
@@ -142,21 +127,21 @@ public class Diseaselist extends AppCompatActivity {
             view = itemView;
         }
 
-        void setProductName(final Upload productName) {
+        void setProductName(final Video productName) {
             CardView cview =view.findViewById(R.id.cardview);
             textView = view.findViewById(R.id.person_name);
-            textView.setText(productName.getDisease());
+            textView.setText(productName.getName());
             imageView= (view.findViewById(R.id.person_photo));
-            TextView textViewy= view.findViewById(R.id.person_age);
-            textViewy.setText(productName.getDate());
+         //   TextView textViewy= view.findViewById(R.id.person_age);
+           // textViewy.setText(productName.getDate());
 
-            meme(productName);
+         //   meme(productName);
 
             cview.setOnClickListener(new android.view.View.OnClickListener() {
                 @Override
                 public void onClick(android.view.View view) {
-                   currentUpload=productName;
-                    startActivity(new Intent(Diseaselist.this, DiagnosisClick.class));
+                    Changename.currentVideo=productName;
+                    startActivity(new Intent(VideoView.this, VideoView.class));
                 }
             });
         }
@@ -164,5 +149,7 @@ public class Diseaselist extends AppCompatActivity {
     }
 
 
-}
 
+
+
+}

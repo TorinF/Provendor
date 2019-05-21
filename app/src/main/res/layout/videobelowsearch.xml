@@ -1,0 +1,71 @@
+<android.support.v7.widget.CardView xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+android:padding="12dp"
+    android:layout_marginBottom="25dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:padding="8dp">
+        <ImageView
+            android:id="@+id/person_photo"
+            android:layout_width="200dp"
+            android:layout_height="112dp"
+            android:layout_alignParentLeft="true"
+
+            android:layout_marginRight="16dp"
+            tools:background="@color/black_overlay" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/person_photo"
+            android:layout_alignRight="@id/person_photo"
+            android:layout_marginStart="0dp"
+
+            android:layout_marginRight="-30dp"
+
+            android:background="@color/fui_bgGitHub"
+            android:padding="2dp"
+            android:text="TextView"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:textColor="@android:color/white"
+            android:textSize="8dp"
+            android:textStyle="bold"
+            tools:text="1:03:31" />
+
+
+
+        <TextView
+            android:id="@+id/person_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/person_photo"
+            android:text="One of the biggest"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/person_name"
+            android:layout_toRightOf="@+id/person_photo"
+            android:text="Pewdiepie" />
+
+        <TextView
+            android:id="@+id/person_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/user"
+            android:layout_toRightOf="@+id/person_photo"
+            android:text="16 M views" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

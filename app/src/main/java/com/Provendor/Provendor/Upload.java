@@ -6,10 +6,12 @@ import android.os.Parcelable;
 import com.google.firebase.firestore.PropertyName;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 
 public class Upload implements Parcelable {
     private String name;
+    private long time1;
     private String imageUrl;
     private String disease;
     private String date;
@@ -27,6 +29,7 @@ public class Upload implements Parcelable {
         out.writeString(imageUrl);
         out.writeString(disease);
         out.writeString(date);
+        out.writeLong(time1);
     }
 
     // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
@@ -47,11 +50,13 @@ public class Upload implements Parcelable {
         imageUrl  = in.readString();
         disease = in.readString();
         date = in.readString();
-
+        time1= in.readLong();
     }
 
     public Upload() {
-        name= ""; //empty constructor needed
+        name= "";
+        time1=System.currentTimeMillis();
+        //empty constructor needed
     }
 
     public Upload(String namey, String imageUrly, String diseasey, float confidencey) {
@@ -63,8 +68,13 @@ public class Upload implements Parcelable {
         name = namey;
         imageUrl = imageUrly;
         confidence=confidencey;
-    }
+        time1=System.currentTimeMillis();
 
+
+    }
+    @PropertyName("time1")
+    public long getTime1(){return time1;}
+    @PropertyName("name")
     public String getName() {
         return name;
     }
@@ -72,9 +82,11 @@ public class Upload implements Parcelable {
     public String getDisease() {
         return disease;
     }
+    @PropertyName("confidence")
     public float getConfidence() {
         return confidence;
     }
+    @PropertyName("date")
     public String getDate() {
         return date;
     }
@@ -84,13 +96,16 @@ public class Upload implements Parcelable {
     public void setdate() {
         date=java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
     }
+    public void setTime1(long timey) {
+        time1 = timey;
+    }
     public void setDisease(String diseasey) {
         disease = diseasey;
     }
     public void setConfidence(float confidencey) {
         confidence = confidencey;
     }
-
+    @PropertyName("imageUrl")
     public String getImageUrl() {
         return imageUrl;
     }

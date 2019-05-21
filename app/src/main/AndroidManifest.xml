@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.Provendor.Provendor">
 
     <supports-screens
@@ -9,6 +10,8 @@
         android:xlargeScreens="true" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -17,6 +20,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".jook"
+            android:label="@string/title_activity_jook"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".Videolists" />
+        <activity android:name=".Changename" />
+        <activity android:name=".UploadVideo" />
+        <activity android:name=".VideoView" />
+        <activity
+            android:name=".Main2Activity"
+            android:label="@string/title_activity_main2"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -29,6 +44,14 @@
             android:name=".DiagnosisClick"
             android:label="@string/app_name"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.google.firebase.auth.internal.FederatedSignInActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:permission="com.google.firebase.auth.api.gms.permission.LAUNCH_FEDERATED_SIGN_IN"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            tools:replace="android:launchMode" />
         <activity
             android:name=".tensorflow.loginactivity"
             android:label="@string/app_name"
@@ -43,7 +66,7 @@
             android:name=".tensorflow.LoginActivity2"
             android:label="@string/app_name"
             android:theme="@style/AppTheme" />
-        <activity android:name="com.Provendor.Provendor.Diseaselist"></activity>
+        <activity android:name=".Diseaselist" />
     </application>
 
 </manifest>
