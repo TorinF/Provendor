@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,20 +7,22 @@
     android:background="#000000"
     android:padding="0dp"
     android:orientation="vertical"
-    tools:context="com.provendor.MainActivity">
+    tools:context="com.Provendor.Provendor.MainActivity">
 
     <com.wonderkiln.camerakit.CameraView
         android:id="@+id/cameraView"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:adjustViewBounds="true"
         android:keepScreenOn="true"
         app:camera_aspectRatio="1"
-          app:camera_flash="auto"
-    app:camera_facing="back"
-    app:camera_focus="continuous"
-    app:camera_permissions="camera">
+        app:camera_facing="back"
+        app:camera_flash="auto"
+        app:camera_focus="continuous"
+        app:camera_permissions="camera"
+        app:layout_constraintBottom_toBottomOf="parent">
 
     </com.wonderkiln.camerakit.CameraView>
 
@@ -123,7 +125,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -136,4 +138,4 @@
 
 
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

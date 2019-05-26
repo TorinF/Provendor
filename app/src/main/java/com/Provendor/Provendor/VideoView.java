@@ -2,20 +2,28 @@ package com.Provendor.Provendor;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.Provendor.Provendor.tensorflow.loginactivity;
+import com.algolia.search.saas.Client;
+import com.algolia.search.saas.Index;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -31,14 +39,19 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class VideoView extends AppCompatActivity {
 private PlayerView playerView;
 private SimpleExoPlayer player;
+    public static boolean fromSearchy;
     private TextView textView;
     private FirebaseFirestore mDatabaseRef;
     private Button button;
     private Query mChartsQuery;
     private RecyclerView mRecycler;
+    public static JSONObject videoy;
     public static  Video currentUpload;
     private ImageView imageView;
     private FirebaseAuth mAuth;
@@ -53,13 +66,31 @@ private SimpleExoPlayer player;
 
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
 
+
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         String useruid = currentUser.getUid();
         RecyclerView recyclerView = findViewById(R.id.viewsundervideo);
         LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        llm.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(llm);
+        Client client = new Client("AK3H70NKN5", "2c8a8880eff5c3664adaa84af4b2bfad");
+        Index index = client.getIndex("Provendor");
+        JSONObject person = new JSONObject();
+        try {
+            person.put("Title", "meme");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            person.getString("Title");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        index.addObjectAsync(person,  null);
+
 
 
         /*when query*/
@@ -86,19 +117,50 @@ private SimpleExoPlayer player;
             }
         };
         recyclerView.setAdapter(adapter);
+      final  Button searchView = (Button) findViewById(R.id.searchbarlist);
+        searchView.setOnClickListener(new android.view.View.OnClickListener() {
+
+            @Override
+
+            public void onClick(android.view.View v) {
+
+                if (v == searchView){
+
+                    startActivity(new Intent(VideoView.this, Searchpagevideos.class));
+                }
+
+            }
+
+        });
+
 
 
     }
+
+
     @Override
     protected void onStart() {
         super.onStart();
+        ExtractorMediaSource mediaSource = null;
         adapter.startListening();
         player= ExoPlayerFactory.newSimpleInstance(this,new DefaultTrackSelector());
         playerView.setPlayer(player);
         DefaultDataSourceFactory dataSourceFactory= new DefaultDataSourceFactory(this, Util.getUserAgent(this,"ExoPlayer"));
-        ExtractorMediaSource mediaSource=new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(Changename.currentVideo.getVideoUrl()));
+
+         
+        if(fromSearchy) {
+            try {
+                mediaSource=new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(videoy.getString("videoUrl")));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else
+            mediaSource=new ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(Changename.currentVideo.getVideoUrl()));
+        if (mediaSource!=null)
         player.prepare(mediaSource);
         player.setPlayWhenReady(true);
+        fromSearchy=false;
     }
 
     @Override

@@ -1,16 +1,22 @@
 package com.Provendor.Provendor;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,13 +24,8 @@ import android.widget.ViewFlipper;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -86,6 +87,9 @@ public class Videolists extends AppCompatActivity {
         };
         recyclerView.setAdapter(adapter);
         final Button button = (Button) findViewById(R.id.button3);
+        final Button searchView = (Button) findViewById(
+                R.id.searchbar1);
+
         button.setOnClickListener(new android.view.View.OnClickListener() {
 
             @Override
@@ -100,6 +104,23 @@ public class Videolists extends AppCompatActivity {
             }
 
         });
+
+        searchView.setOnClickListener(new android.view.View.OnClickListener() {
+
+            @Override
+
+            public void onClick(android.view.View v) {
+
+                if (v == searchView){
+
+                    startActivity(new Intent(Videolists.this, Searchpagevideos.class));
+                }
+
+            }
+
+        });
+
+
 
 
     }

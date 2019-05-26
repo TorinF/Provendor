@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:413114931494:android:cdbe2ab9af7521dc",
         "android_client_info": {
-          "package_name": "com.provendor.provendor"
+          "package_name": "com.Provendor.Provendor"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "413114931494-p7eqna2drscppe3o4ouaj8am15vdsiso.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.provendor.provendor",
+            "package_name": "com.Provendor.Provendor",
             "certificate_hash": "4b1ddadc6d2ba7925e6bf902f320dcb67950018b"
           }
         },

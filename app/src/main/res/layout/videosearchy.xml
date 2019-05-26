@@ -1,0 +1,78 @@
+<layout xmlns:algolia="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data class= "com.provendor.Provendorz">
+        <variable
+            name="provendor"
+            type="com.provendor.Provendorz" />
+    </data>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp">
+
+
+            <ImageView
+                android:id="@+id/person_photo"
+                android:layout_width="200dp"
+                android:layout_height="112dp"
+                android:layout_alignParentLeft="true"
+
+                android:layout_marginRight="16dp" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/person_photo"
+                android:layout_alignRight="@id/person_photo"
+                android:layout_marginStart="0dp"
+
+                android:layout_marginRight="-30dp"
+
+                android:background="@color/fui_bgGitHub"
+                android:padding="2dp"
+                android:text="TextView"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:textColor="@android:color/white"
+                android:textSize="8dp"
+                android:textStyle="bold"
+                algolia:attribute='@{"length"}'
+                tools:text="1:03:31" />
+
+
+            <TextView
+                algolia:attribute='@{"name"}'
+                android:id="@+id/person_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/person_photo"
+                android:text="One of the biggest"
+                android:textSize="30sp" />
+
+            <TextView
+                algolia:attribute='@{"user"}'
+                android:id="@+id/user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/person_name"
+                android:layout_toRightOf="@+id/person_photo"
+                android:text="Pewdiepie" />
+
+            <TextView
+                algolia:attribute='@{"likes"}'
+                android:id="@+id/person_age"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/user"
+                android:layout_toRightOf="@+id/person_photo"
+                android:text="16 M views" />
+
+        </RelativeLayout>
+
+</layout>

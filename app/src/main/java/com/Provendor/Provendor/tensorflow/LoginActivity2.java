@@ -2,9 +2,9 @@ package com.Provendor.Provendor.tensorflow;
 
 import android.content.Intent;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
-import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
 
@@ -17,12 +17,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
-import com.Provendor.Provendor.Diagnosis;
-import com.Provendor.Provendor.Diseaselist;
-import com.Provendor.Provendor.MainActivity;
 import com.Provendor.Provendor.R;
-import com.Provendor.Provendor.UploadVideo;
-import com.Provendor.Provendor.VideoView;
+import com.Provendor.Provendor.Searchpagevideos;
 import com.Provendor.Provendor.Videolists;
 import com.google.android.gms.tasks.OnCompleteListener;
 
@@ -36,6 +32,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 
 public class LoginActivity2 extends AppCompatActivity {
+
 
 
 
