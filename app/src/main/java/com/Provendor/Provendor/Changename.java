@@ -63,5 +63,6 @@ public class Changename extends AppCompatActivity {
         db.collection("videos").document(time).set(UploadVideo.UploadedVideo);
         currentVideo=UploadVideo.UploadedVideo;
         startActivity(new Intent(Changename.this, VideoView.class));
+
     }
 }

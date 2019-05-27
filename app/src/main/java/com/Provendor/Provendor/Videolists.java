@@ -22,6 +22,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -65,13 +67,13 @@ public class Videolists extends AppCompatActivity {
         /*when query*/
         Query query =   rootRef.collection("videos").whereEqualTo("category","free").orderBy("views", Query.Direction.ASCENDING).limit(10);
 
-        FirestoreRecyclerOptions<Video> options = new FirestoreRecyclerOptions.Builder<Video>()
+       FirestoreRecyclerOptions<Video> options = new FirestoreRecyclerOptions.Builder<Video>()
                 .setQuery(query, Video.class)
                 .build();
         adapter = new FirestoreRecyclerAdapter<Video, Videolists.ProductViewHolder>(options) {
             @Override
             protected void onBindViewHolder(@NonNull Videolists.ProductViewHolder holder, int position, @NonNull Video productModel) {
-                holder.setProductName(productModel);
+               holder.setProductName( productModel);
 
             }
 
@@ -86,6 +88,7 @@ public class Videolists extends AppCompatActivity {
             }
         };
         recyclerView.setAdapter(adapter);
+
         final Button button = (Button) findViewById(R.id.button3);
         final Button searchView = (Button) findViewById(
                 R.id.searchbar1);
@@ -135,9 +138,9 @@ public class Videolists extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
-        if (adapter != null) {
-            adapter.stopListening();
-        }
+       if (adapter != null) {
+         adapter.stopListening();
+    }
 
     }
     protected void meme(final Video productName){
@@ -155,15 +158,17 @@ public class Videolists extends AppCompatActivity {
             view = itemView;
         }
 
-        void setProductName(final Video productName) {
+        void setProductName( final Video productName) {
+
+
             CardView cview =view.findViewById(R.id.cardview);
             textView = view.findViewById(R.id.person_name);
             textView.setText(productName.getName());
-            imageView= (view.findViewById(R.id.person_photo));
-            //   TextView textViewy= view.findViewById(R.id.person_age);
-            // textViewy.setText(productName.getDate());
+            imageView= (view.findViewById(R.id.videophoto));
+            Glide.with(imageView.getContext()).load(storage.getReferenceFromUrl(productName.getImageUrl())).into(imageView);
+             TextView textViewy= view.findViewById(R.id.person_age);
+            textViewy.setText(productName.getDate());
 
-            //   meme(productName);
 
             cview.setOnClickListener(new android.view.View.OnClickListener() {
                 @Override

@@ -24,6 +24,7 @@ import android.widget.ViewFlipper;
 import com.Provendor.Provendor.tensorflow.loginactivity;
 import com.algolia.search.saas.Client;
 import com.algolia.search.saas.Index;
+import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -174,13 +175,7 @@ private SimpleExoPlayer player;
         player.release();
         player=null;
     }
-    protected void meme(final Video productName){
-        GlideApp.with(this /* context */)
 
-                .load(storage.getReferenceFromUrl(productName.getImageUrl()))
-
-                .into(imageView);
-    }
     private class ProductViewHolder extends RecyclerView.ViewHolder {
         private android.view.View view;
 
@@ -194,10 +189,12 @@ private SimpleExoPlayer player;
             textView = view.findViewById(R.id.person_name);
             textView.setText(productName.getName());
             imageView= (view.findViewById(R.id.person_photo));
-         //   TextView textViewy= view.findViewById(R.id.person_age);
-           // textViewy.setText(productName.getDate());
+            Glide.with(imageView.getContext()).load(storage.getReferenceFromUrl(productName.getImageUrl())).into(imageView);
 
-         //   meme(productName);
+            TextView textViewy= view.findViewById(R.id.person_age);
+            textViewy.setText(productName.getDate());
+
+
 
             cview.setOnClickListener(new android.view.View.OnClickListener() {
                 @Override
