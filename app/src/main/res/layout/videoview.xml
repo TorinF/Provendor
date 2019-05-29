@@ -1,19 +1,37 @@
-<android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 
+
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="39dp"
+        android:layout_height="25dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="26dp"
+        android:outlineProvider="background"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_search_category_default" />
+
     <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:id="@+id/searchbar1"
+
+
+        android:layout_width="380dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:background="#EEFFFFFF"
+
+        android:visibility="visible"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,9 +42,13 @@
         tools:context=".Diseaselist"
         tools:orientation="vertical"
         >
-        <SearchView
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchbar"
             android:layout_width="match_parent"
-            android:layout_height="40dp" />
+            android:layout_height="40dp"
+            android:visibility="visible" />
+
         <TextView
             android:id="@+id/textView8"
             android:layout_width="wrap_content"
@@ -36,14 +58,14 @@
             android:text="Trending " />
 
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/Popular"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_marginBottom="30dp"
             android:orientation="horizontal">
 
-        </android.support.v7.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
 
         <TextView
             android:id="@+id/textView4"
@@ -53,14 +75,14 @@
             android:textSize="30dp"
             android:text="Paid " />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/PopularPaid"
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_marginBottom="30dp"
             android:layout_height="150dp">
 
-        </android.support.v7.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
         <TextView
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
@@ -68,18 +90,18 @@
             android:layout_marginBottom="20dp"
             android:textSize="30dp"
             android:text="Free " />
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/PopularNormal"
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_marginBottom="30dp"
             android:layout_height="150dp">
 
-        </android.support.v7.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
 
 
     </LinearLayout>
 
 
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

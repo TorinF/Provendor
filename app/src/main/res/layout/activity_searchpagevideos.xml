@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:algolia= "http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+
+    tools:context="com.Provendor.Provendor.Searchpagevideos"
+
+    >
+    <com.algolia.instantsearch.ui.views.SearchBox
+    android:id="@+id/searchBox"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+<com.algolia.instantsearch.ui.views.Hits
+    android:id="@+id/hits"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+    android:clickable="true"
+    algolia:itemLayout="@layout/videosearchy"
+
+    android:focusable="true">
+</com.algolia.instantsearch.ui.views.Hits>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

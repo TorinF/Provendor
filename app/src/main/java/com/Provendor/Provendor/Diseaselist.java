@@ -1,26 +1,23 @@
 package com.Provendor.Provendor;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.annotation.NonNull;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
+
+
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import com.Provendor.Provendor.tensorflow.LoginActivity2;
-import com.Provendor.Provendor.tensorflow.loginactivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -29,8 +26,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.auth.User;
-import com.google.firebase.firestore.core.View;
 import com.google.firebase.storage.FirebaseStorage;
 
 public class Diseaselist extends AppCompatActivity {
@@ -59,7 +54,7 @@ public class Diseaselist extends AppCompatActivity {
         String useruid = currentUser.getUid();
         RecyclerView recyclerView = findViewById(R.id.goodmeme);
         LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        llm.setOrientation(RecyclerView.VERTICAL);
         VF = (ViewFlipper) findViewById(R.id.ViewFlipper01);
         recyclerView.setLayoutManager(llm);
         playerView=findViewById(R.id.video_view);

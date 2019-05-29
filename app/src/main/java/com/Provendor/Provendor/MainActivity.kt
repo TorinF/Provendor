@@ -1,88 +1,38 @@
 package com.Provendor.Provendor
 
 import android.content.Intent
-import com.bumptech.glide.annotation.GlideModule
-import com.bumptech.glide.module.AppGlideModule
 
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 
-import com.google.firebase.firestore.CollectionReference
-
-import com.google.firebase.firestore.DocumentChange
-
-import com.google.firebase.firestore.DocumentSnapshot
-
-import com.google.firebase.firestore.EventListener
-
-import com.google.firebase.firestore.FieldPath
-
-import com.google.firebase.firestore.FieldValue
-
 import com.google.firebase.firestore.FirebaseFirestore
 
-import com.google.firebase.firestore.FirebaseFirestoreException
-
-import com.google.firebase.firestore.FirebaseFirestoreSettings
-
-import com.google.firebase.firestore.MetadataChanges
-
-import com.google.firebase.firestore.Query
-
-import com.google.firebase.firestore.QuerySnapshot
-
-import com.google.firebase.firestore.ServerTimestamp
-
-import com.google.firebase.firestore.SetOptions
-
-import com.google.firebase.firestore.Source
-import android.support.annotation.NonNull
-import android.support.v7.app.AppCompatActivity
 import android.util.Base64
 import android.util.Log
 import android.view.View
 
 import com.google.android.gms.tasks.Continuation
 
-import com.google.android.gms.tasks.OnFailureListener
-
 import com.google.android.gms.tasks.Task
 
-import com.google.firebase.FirebaseApp
-
 import com.google.firebase.storage.FirebaseStorage
-
-import com.google.firebase.storage.StorageException
-
-import com.google.firebase.storage.StorageMetadata
 
 import com.google.firebase.storage.StorageReference
 
 import com.google.firebase.storage.UploadTask
-import android.view.Window
-import android.view.WindowManager
 import android.widget.ImageView
-import com.Provendor.Provendor.R
-import android.widget.Toast;
-import com.Provendor.Provendor.Diagnosis
-import com.Provendor.Provendor.R.id.cameraView
-import com.Provendor.Provendor.R.id.imageCaptured
-import com.Provendor.Provendor.Upload
+import androidx.appcompat.app.AppCompatActivity
 import com.Provendor.Provendor.tensorflow.Classifier
 import com.Provendor.Provendor.tensorflow.TensorFlowImageClassifier
-import com.bumptech.glide.Glide
 import com.wonderkiln.camerakit.CameraKitImage
-import kotlinx.android.synthetic.main.activity_main.*
 
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.UserInfo
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.*
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
@@ -90,8 +40,6 @@ import kotlinx.coroutines.launch
 
 
 import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileInputStream
 import kotlin.coroutines.CoroutineContext
 
 
@@ -106,7 +54,7 @@ class MainActivity : AppCompatActivity() {
          var imageurl =""
         val db = FirebaseFirestore.getInstance()
         private var time = ""
-        public var meme:Upload?=Upload()
+        public var meme: Upload?= Upload()
         private val mUploadTask: StorageTask<*>? = null
         private var Useruid= ""
         lateinit var imageView: ImageView
@@ -471,6 +419,7 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+
         val intent = Intent(this, Diagnosis::class.java)
 // To pass any data to next activity
 // start your next activity
@@ -595,7 +544,7 @@ class MainActivity : AppCompatActivity() {
             }).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     downloadUri = task.result
-                    imageurl= downloadUri.toString()
+                    imageurl = downloadUri.toString()
                     uploady.setImageUrl(downloadUri.toString())
                     uploady.setdate()
 
