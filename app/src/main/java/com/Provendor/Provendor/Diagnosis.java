@@ -1,22 +1,18 @@
 package com.Provendor.Provendor;
 
+
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.Provendor.Provendor.GlideApp;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import android.widget.TextView;
-import org.json.JSONException;
 
-import static com.Provendor.Provendor.MainActivity.imageView;
-import static com.Provendor.Provendor.MainActivity.storage;
+import androidx.appcompat.app.AppCompatActivity;
 
 
 public class Diagnosis extends AppCompatActivity {

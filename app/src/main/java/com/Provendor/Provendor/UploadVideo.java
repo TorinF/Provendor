@@ -6,12 +6,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,24 +20,26 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.Provendor.Provendor.tensorflow.LoginActivity2;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.core.view.Change;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
 import java.util.Calendar;
 import android.app.ProgressDialog;
+
+import wseemann.media.FFmpegMediaMetadataRetriever;
 
 public class UploadVideo extends AppCompatActivity {
     private Button btn;
@@ -80,10 +82,14 @@ private String uid;
         ProgressBar progressBar= (ProgressBar)findViewById(R.id.progressBar2);
 
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        final StorageReference photoRefy = storageRef.child("user/"+uid + "/images/"+System.currentTimeMillis()+".jpg");
+
         final StorageReference photoRef = storageRef.child("user/"+uid + "/videos/"+System.currentTimeMillis()+".mp4");
 // add File/URI
         if (contentURI != null)
         {
+
+
             photoRef.putFile(contentURI)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -94,14 +100,51 @@ private String uid;
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     final Uri downloadUrl = uri;
+
                                     UploadedVideo.setVideoUrl(downloadUrl.toString());
                                     MediaMetadataRetriever retriever = new MediaMetadataRetriever();
 //use one of overloaded setDataSource() functions to set your data source
                                     retriever.setDataSource(getBaseContext(), contentURI);
+                                    Bitmap bitmap=   retriever.getFrameAtTime(200);
+                                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                                    byte[] data = baos.toByteArray();
+
+                                   photoRefy.putBytes(data) .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                        @Override
+                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                            // Upload succeeded
+                                            Toast.makeText(getApplicationContext(), "Upload Success...", Toast.LENGTH_SHORT).show();
+                                            photoRefy.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                                @Override
+                                                public void onSuccess(Uri uri) {
+                                                    final Uri downloadUrl = uri;
+                                                    UploadedVideo.setImageUrl(downloadUrl.toString());
+//use one of overloaded setDataSource() functions to set your data source
+
+
+                                                }
+                                            });
+                                        }
+                                    })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception exception) {
+                                                    // Upload failed
+                                                    Toast.makeText(getApplicationContext(), "Upload failed...", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                        @Override
+                                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                            //displaying percentage in progress dialog
+                                        }
+                                    });
                                     String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
                                     long timeInMillisec =Long.parseLong(time )/1000;
                                     UploadedVideo.setLength(((int)timeInMillisec));
                                     retriever.release();
+
                                     startActivity(new Intent(UploadVideo.this, Changename.class));
                                 }
                             });

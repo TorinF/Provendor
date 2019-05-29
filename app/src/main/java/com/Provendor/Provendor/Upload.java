@@ -5,8 +5,6 @@ import android.os.Parcelable;
 
 import com.google.firebase.firestore.PropertyName;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Calendar;
 
 public class Upload implements Parcelable {
