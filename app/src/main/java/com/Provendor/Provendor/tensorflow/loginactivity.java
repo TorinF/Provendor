@@ -20,6 +20,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.Provendor.Provendor.Diseaselist;
+import com.Provendor.Provendor.ProfileClass;
 import com.Provendor.Provendor.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 
@@ -28,6 +29,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class loginactivity extends AppCompatActivity {
@@ -43,6 +46,13 @@ public class loginactivity extends AppCompatActivity {
     private Button button_register;
 
     private Button button_login;
+
+    private ProfileClass newUser;
+
+    private FirebaseFirestore db;
+
+    private String uid;
+
 
 
     @Override
@@ -144,6 +154,11 @@ public class loginactivity extends AppCompatActivity {
                                 //User is successfully registered and logged in
 
                                 //start Profile Activity here
+                                db = FirebaseFirestore.getInstance();
+                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                uid = user.getUid();
+                                newUser = new ProfileClass(uid,0,0,"",null,0,0);
+                                db.collection("userdata").document(uid).set(newUser);
 
                                 Toast.makeText(loginactivity.this, "registration successful",
 
