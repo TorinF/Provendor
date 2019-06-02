@@ -149,6 +149,7 @@ public class loginactivity extends AppCompatActivity {
 
                                         Toast.LENGTH_SHORT).show();
 
+
                                 finish();
 
                                 startActivity(new Intent(loginactivity.this, Diseaselist.class));

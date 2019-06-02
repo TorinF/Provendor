@@ -20,4 +20,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_jook">jook</string>
+    <string name="social">social</string>
+    <string name="diagnoses">Diagnoses</string>
+    <string name="inbox">Inbox</string>
+    <string name="rewards">Rewards</string>
+    <string name="home">Home</string>
 </resources>

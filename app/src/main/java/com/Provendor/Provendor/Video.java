@@ -159,7 +159,7 @@ public class Video implements Parcelable {
         return user;
     }
 
-    @PropertyName("imageUrl")
+        @PropertyName("imageUrl")
     public String getImageUrl() {
         return imageUrl;
     }

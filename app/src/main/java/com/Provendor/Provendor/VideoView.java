@@ -3,6 +3,7 @@ package com.Provendor.Provendor;
 import android.content.Intent;
 import android.net.Uri;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
@@ -34,6 +35,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -55,6 +57,7 @@ private SimpleExoPlayer player;
     public static JSONObject videoy;
     public static  Video currentUpload;
     private ImageView imageView;
+    private ActionBar toolbar;
     private FirebaseAuth mAuth;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private FirestoreRecyclerAdapter<Video, VideoView.ProductViewHolder> adapter;
@@ -67,6 +70,7 @@ private SimpleExoPlayer player;
 
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
 
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
