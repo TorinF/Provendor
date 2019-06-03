@@ -30,7 +30,7 @@ public class Profile extends AppCompatActivity {
     private TextView Friends;
     private TextView Followers;
     private FirebaseFirestore db;
-    private Button changeProfilePic
+    private Button changeProfilePic;
     private int GALLERY = 1, CAMERA = 2;
 
     @Override
