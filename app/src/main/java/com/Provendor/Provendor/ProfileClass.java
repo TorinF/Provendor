@@ -11,6 +11,9 @@ public class ProfileClass {
     private String profileImageUrl;
     private int vids;
     private int questions;
+    private int xp;
+    private int level;
+    private int gold;
 
     public ProfileClass(){
         user = "";
@@ -20,8 +23,11 @@ public class ProfileClass {
         profileImageUrl = null;
         vids = 0;
         questions = 0;
+        xp = 0;
+        level = 0;
+        gold = 0;
     }
-    public ProfileClass(String ID, int friend, int follower, String Name,String Url, int videos, int qs){
+    public ProfileClass(String ID, int friend, int follower, String Name,String Url, int videos, int qs, int xps, int lvl, int cash){
         user = ID;
         friends = friend;
         followers = follower;
@@ -29,60 +35,89 @@ public class ProfileClass {
         profileImageUrl = Url;
         vids = videos;
         questions = qs;
+        xp  = xps;
+        level = lvl;
+        gold = cash;
     }
     @PropertyName("user")
-    public String getuser(){return user;}
+    public String getUser(){return user;}
 
     @PropertyName("userName")
-    public String getuserName(){return userName;}
+    public String getUserName(){return userName;}
 
     @PropertyName("friends")
-    public int getfriends(){return friends;}
+    public int getFriends(){return friends;}
 
     @PropertyName("followers")
-    public int getfollowers(){return followers;}
+    public int getFollowers(){return followers;}
 
     @PropertyName("profileImageUrl")
-    public String getprofileImageUrl() {
+    public String getProfileImageUrl() {
         return profileImageUrl;
     }
 
     @PropertyName("vids")
-    public int getvids(){
+    public int getVids(){
         return vids;
     }
 
     @PropertyName("questions")
-    public int getquestions(){
+    public int getQuestions(){
         return questions;
     }
 
-    public void setfollowers(int follower) {
+    @PropertyName("level")
+    public int getLevel(){
+        return level;
+    }
+
+    @PropertyName("exp")
+    public int getXp(){
+        return xp;
+    }
+    @PropertyName("gold")
+    public int getGold() {
+        return gold;
+    }
+
+    public void setFollowers(int follower) {
         this.followers = follower;
     }
 
-    public void setfriends(int friend) {
+    public void setFriends(int friend) {
         this.friends = friend;
     }
 
-    public void setuser(String ID) {
+    public void setUser(String ID) {
         user = ID;
     }
 
-    public void setuserName(String user) {
+    public void setUserName(String user) {
         userName = user;
     }
 
-    public void setprofileImageUrl(String profileImageUrl) {
+    public void setProfileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
     }
 
-    public void setquestions(int questions) {
+    public void setVuestions(int questions) {
         this.questions = questions;
     }
 
-    public void setvids(int vids) {
+    public void setVids(int vids) {
         this.vids = vids;
+    }
+
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
+
+    public void setGold(int gold) {
+        this.gold = gold;
+    }
+
+    public void setLevel(int level) {
+        this.level =  level;
     }
 }
 

@@ -159,7 +159,7 @@ public class loginactivity extends AppCompatActivity {
                                 db = FirebaseFirestore.getInstance();
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 uid = user.getUid();
-                                newUser = new ProfileClass(uid,0,0,"",null,0,0);
+                                newUser = new ProfileClass(uid,0,0,"",null,0,0,0,0,0);
                                 db.collection("userdata").document(uid).set(newUser);
 
                                 Toast.makeText(loginactivity.this, "registration successful",
