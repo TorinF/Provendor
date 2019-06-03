@@ -157,7 +157,7 @@ public class loginactivity extends AppCompatActivity {
 
                                 //start Profile Activity here
                                 db = FirebaseFirestore.getInstance();
-                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                FirebaseUser user = mAuth.getCurrentUser();
                                 uid = user.getUid();
                                 newUser = new ProfileClass(uid,0,0,"",null,0,0);
                                 db.collection("userdata").document(uid).set(newUser);

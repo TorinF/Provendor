@@ -30,7 +30,7 @@ public class Profile extends AppCompatActivity {
     private TextView Friends;
     private TextView Followers;
     private FirebaseFirestore db;
-    private Button changeProfilePic
+    private Button changeProfilePic;
     private int GALLERY = 1, CAMERA = 2;
 
     @Override
@@ -60,12 +60,12 @@ public class Profile extends AppCompatActivity {
                 showPictureDialog();
             }
         });
-        Username.setText(owner.getUserName());
-        UserID.setText(owner.getUserID());
-        Vids.setText("Videos: " + owner.getVids());
-        Ques.setText("Questions: " + owner.getQuestions());
-        Friends.setText("Friends: " + owner.getFriends());
-        Followers.setText("Followers: " + owner.getFollowers());
+        Username.setText(owner.getuserName());
+        UserID.setText(owner.getuser());
+        Vids.setText("Videos: " + owner.getvids());
+        Ques.setText("Questions: " + owner.getquestions());
+        Friends.setText("Friends: " + owner.getfriends());
+        Followers.setText("Followers: " + owner.getfollowers());
 
     }
     private void showPictureDialog(){
