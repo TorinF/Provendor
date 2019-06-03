@@ -23,12 +23,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class Profile extends AppCompatActivity {
     private String uid;
     private ProfileClass owner;
-    private TextView Username;
-    private TextView UserID;
-    private TextView Vids;
-    private TextView Ques;
-    private TextView Friends;
-    private TextView Followers;
+    private TextView username;
+    private TextView userID;
+    private TextView vids;
+    private TextView ques;
+    private TextView friends;
+    private TextView followers;
     private FirebaseFirestore db;
     private Button changeProfilePic;
     private int GALLERY = 1, CAMERA = 2;
@@ -38,13 +38,13 @@ public class Profile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        Username = (TextView) findViewById(R.id.UsernameText);
+        username = (TextView) findViewById(R.id.UsernameText);
         uid = user.getUid();
-        UserID = (TextView) findViewById(R.id.UserID1);
-        Vids = (TextView) findViewById(R.id.vids);
-        Ques = (TextView) findViewById(R.id.qs);
-        Friends = (TextView) findViewById(R.id.friends);
-        Followers = (TextView) findViewById(R.id.followers);
+        userID = (TextView) findViewById(R.id.UserID1);
+        vids = (TextView) findViewById(R.id.vids);
+        ques = (TextView) findViewById(R.id.qs);
+        friends = (TextView) findViewById(R.id.friends);
+        followers = (TextView) findViewById(R.id.followers);
 
         DocumentReference docRef = db.collection("userData").document(uid);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -60,12 +60,12 @@ public class Profile extends AppCompatActivity {
                 showPictureDialog();
             }
         });
-        Username.setText(owner.getuserName());
-        UserID.setText(owner.getuser());
-        Vids.setText("Videos: " + owner.getvids());
-        Ques.setText("Questions: " + owner.getquestions());
-        Friends.setText("Friends: " + owner.getfriends());
-        Followers.setText("Followers: " + owner.getfollowers());
+        username.setText(owner.getuserName());
+        userID.setText(owner.getuser());
+        vids.setText("Videos: " + owner.getvids());
+        ques.setText("Questions: " + owner.getquestions());
+        friends.setText("Friends: " + owner.getfriends());
+        followers.setText("Followers: " + owner.getfollowers());
 
     }
     private void showPictureDialog(){
