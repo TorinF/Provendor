@@ -3,52 +3,34 @@ package com.Provendor.Provendor;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.media.MediaMetadataRetriever;
-import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.Toast;
-import android.widget.VideoView;
+import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URI;
-import java.util.Calendar;
-import android.app.ProgressDialog;
-
-import wseemann.media.FFmpegMediaMetadataRetriever;
-
-import static android.media.MediaRecorder.VideoSource.CAMERA;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class Profile extends AppCompatActivity {
     private String uid;
-    private String followers;
-    private String friends;
-    private Button changeProfilePic;
+    private ProfileClass owner;
+    private TextView Username;
+    private TextView UserID;
+    private TextView Vids;
+    private TextView Ques;
+    private TextView Friends;
+    private TextView Followers;
+    private FirebaseFirestore db;
+    private Button changeProfilePic
     private int GALLERY = 1, CAMERA = 2;
 
     @Override
@@ -56,15 +38,35 @@ public class Profile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        Username = (TextView) findViewById(R.id.UsernameText);
         uid = user.getUid();
-        followers = 0 + "";
-        friends = 0 + "" ;
+        UserID = (TextView) findViewById(R.id.UserID1);
+        Vids = (TextView) findViewById(R.id.vids);
+        Ques = (TextView) findViewById(R.id.qs);
+        Friends = (TextView) findViewById(R.id.friends);
+        Followers = (TextView) findViewById(R.id.followers);
+
+        DocumentReference docRef = db.collection("userData").document(uid);
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                owner= documentSnapshot.toObject(ProfileClass.class);
+            }
+        });
+        changeProfilePic = (Button) findViewById(R.id.button4);
         changeProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showPictureDialog();
             }
         });
+        Username.setText(owner.getUserName());
+        UserID.setText(owner.getUserID());
+        Vids.setText("Videos: " + owner.getVids());
+        Ques.setText("Questions: " + owner.getQuestions());
+        Friends.setText("Friends: " + owner.getFriends());
+        Followers.setText("Followers: " + owner.getFollowers());
+
     }
     private void showPictureDialog(){
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
