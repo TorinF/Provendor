@@ -22,8 +22,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+<<<<<<< HEAD
         <activity android:name=".Searchpagevideos"></activity>
 
+=======
+        <activity android:name=".Profile"></activity>
+        <activity android:name=".Searchpagevideos" />
+>>>>>>> origin/master3
         <activity android:name=".Videolists" />
         <activity android:name=".Changename" />
         <activity android:name=".UploadVideo" />

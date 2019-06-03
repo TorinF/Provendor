@@ -3,7 +3,10 @@ package com.Provendor.Provendor;
 import android.content.Intent;
 import android.net.Uri;
 import androidx.annotation.NonNull;
+<<<<<<< HEAD
 import androidx.appcompat.app.ActionBar;
+=======
+>>>>>>> origin/master3
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.cardview.widget.CardView;
@@ -70,7 +73,10 @@ private SimpleExoPlayer player;
 
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
 
+<<<<<<< HEAD
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+=======
+>>>>>>> origin/master3
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
