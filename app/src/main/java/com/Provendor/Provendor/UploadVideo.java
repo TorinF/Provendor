@@ -84,6 +84,7 @@ private String uid;
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         final StorageReference photoRefy = storageRef.child("user/"+uid + "/images/"+System.currentTimeMillis()+".jpg");
 
+
         final StorageReference photoRef = storageRef.child("user/"+uid + "/videos/"+System.currentTimeMillis()+".mp4");
 // add File/URI
         if (contentURI != null)

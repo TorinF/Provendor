@@ -20,10 +20,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.Provendor.Provendor.Diseaselist;
-<<<<<<< HEAD
-=======
+
 import com.Provendor.Provendor.ProfileClass;
->>>>>>> origin/master3
 import com.Provendor.Provendor.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 
@@ -32,11 +30,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 
 import com.google.firebase.auth.FirebaseAuth;
-<<<<<<< HEAD
-=======
+
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
->>>>>>> origin/master3
 
 
 public class loginactivity extends AppCompatActivity {
