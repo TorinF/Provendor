@@ -4,84 +4,84 @@ import com.google.firebase.firestore.PropertyName;
 
 public class ProfileClass {
 
-    private String UserID;
+    private String user;
     private int friends;
     private int followers;
-    private String UserName;
+    private String userName;
     private String profileImageUrl;
     private int vids;
     private int questions;
 
     public ProfileClass(){
-        UserID = "";
+        user = "";
         friends = 0;
         followers = 0;
-        UserName = "";
+        userName = "";
         profileImageUrl = null;
         vids = 0;
         questions = 0;
     }
     public ProfileClass(String ID, int friend, int follower, String Name,String Url, int videos, int qs){
-        UserID = ID;
+        user = ID;
         friends = friend;
         followers = follower;
-        UserName  =  Name;
+        userName  =  Name;
         profileImageUrl = Url;
         vids = videos;
         questions = qs;
     }
-    @PropertyName("User")
-    public String getUserID(){return UserID;}
+    @PropertyName("user")
+    public String getuser(){return user;}
 
-    @PropertyName("UserName")
-    public String getUserName(){return UserName;}
+    @PropertyName("userName")
+    public String getuserName(){return userName;}
 
-    @PropertyName("Friends")
-    public int getFriends(){return friends;}
+    @PropertyName("friends")
+    public int getfriends(){return friends;}
 
-    @PropertyName("Followers")
-    public int getFollowers(){return followers;}
+    @PropertyName("followers")
+    public int getfollowers(){return followers;}
 
-    @PropertyName("ImageUrl")
-    public String getProfileImageUrl() {
+    @PropertyName("profileImageUrl")
+    public String getprofileImageUrl() {
         return profileImageUrl;
     }
 
-    @PropertyName("Videos")
-    public int getVids(){
+    @PropertyName("vids")
+    public int getvids(){
         return vids;
     }
 
-    @PropertyName("Questions")
-    public int getQuestions(){
+    @PropertyName("questions")
+    public int getquestions(){
         return questions;
     }
 
-    public void setFollowers(int follower) {
+    public void setfollowers(int follower) {
         this.followers = follower;
     }
 
-    public void setFriends(int friend) {
+    public void setfriends(int friend) {
         this.friends = friend;
     }
 
-    public void setUserID(String ID) {
-        UserID = ID;
+    public void setuser(String ID) {
+        user = ID;
     }
 
-    public void setUserName(String user) {
-        UserName = user;
+    public void setuserName(String user) {
+        userName = user;
     }
 
-    public void setProfileImageUrl(String profileImageUrl) {
+    public void setprofileImageUrl(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
     }
 
-    public void setQuestions(int questions) {
+    public void setquestions(int questions) {
         this.questions = questions;
     }
 
-    public void setVids(int vids) {
+    public void setvids(int vids) {
         this.vids = vids;
     }
 }

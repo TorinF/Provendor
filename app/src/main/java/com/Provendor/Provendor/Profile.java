@@ -60,12 +60,12 @@ public class Profile extends AppCompatActivity {
                 showPictureDialog();
             }
         });
-        Username.setText(owner.getUserName());
-        UserID.setText(owner.getUserID());
-        Vids.setText("Videos: " + owner.getVids());
-        Ques.setText("Questions: " + owner.getQuestions());
-        Friends.setText("Friends: " + owner.getFriends());
-        Followers.setText("Followers: " + owner.getFollowers());
+        Username.setText(owner.getuserName());
+        UserID.setText(owner.getuser());
+        Vids.setText("Videos: " + owner.getvids());
+        Ques.setText("Questions: " + owner.getquestions());
+        Friends.setText("Friends: " + owner.getfriends());
+        Followers.setText("Followers: " + owner.getfollowers());
 
     }
     private void showPictureDialog(){
