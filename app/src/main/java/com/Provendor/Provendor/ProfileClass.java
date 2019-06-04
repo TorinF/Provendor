@@ -71,7 +71,7 @@ public class ProfileClass {
         return level;
     }
 
-    @PropertyName("exp")
+    @PropertyName("xp")
     public int getXp(){
         return xp;
     }
@@ -108,15 +108,15 @@ public class ProfileClass {
         this.vids = vids;
     }
 
-    public void setXp(int xp) {
+    public void setxp(int xp) {
         this.xp = xp;
     }
 
-    public void setGold(int gold) {
+    public void setgold(int gold) {
         this.gold = gold;
     }
 
-    public void setLevel(int level) {
+    public void setlevel(int level) {
         this.level =  level;
     }
 }
