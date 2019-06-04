@@ -29,7 +29,7 @@ public class Profile extends AppCompatActivity {
     private TextView ques;
     private TextView friends;
     private TextView followers;
-    private FirebaseFirestore db;
+    private FirebaseFirestore db=FirebaseFirestore.getInstance();
     private Button changeProfilePic;
     private int GALLERY = 1, CAMERA = 2;
 
@@ -46,11 +46,18 @@ public class Profile extends AppCompatActivity {
         friends = (TextView) findViewById(R.id.friends);
         followers = (TextView) findViewById(R.id.followers);
 
-        DocumentReference docRef = db.collection("userData").document(uid);
+
+        DocumentReference docRef = db.collection("userdata").document(uid);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 owner= documentSnapshot.toObject(ProfileClass.class);
+                username.setText(owner.getUserName());
+                userID.setText(owner.getUser());
+                vids.setText("Videos: " + owner.getVids());
+                ques.setText("Questions: " + owner.getQuestions());
+                friends.setText("Friends: " + owner.getFriends());
+                followers.setText("Followers: " + owner.getFollowers());
             }
         });
         changeProfilePic = (Button) findViewById(R.id.button4);
@@ -60,13 +67,9 @@ public class Profile extends AppCompatActivity {
                 showPictureDialog();
             }
         });
-        username.setText(owner.getUserName());
-        userID.setText(owner.getUser());
-        vids.setText("Videos: " + owner.getVids());
-        ques.setText("Questions: " + owner.getQuestions());
-        friends.setText("Friends: " + owner.getFriends());
-        followers.setText("Followers: " + owner.getFollowers());
+       // if (owner!=null) {
 
+       // }
     }
     private void showPictureDialog(){
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
