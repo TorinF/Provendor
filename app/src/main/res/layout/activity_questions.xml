@@ -64,4 +64,12 @@
         android:text="View Answers"
         tools:layout_editor_absoluteX="101dp"
         tools:layout_editor_absoluteY="551dp" />
+
+    <Button
+        android:id="@+id/Karmagiver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Karma "
+        tools:layout_editor_absoluteX="76dp"
+        tools:layout_editor_absoluteY="316dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
