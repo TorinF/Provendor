@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
+import com.Provendor.Provendor.Diseaselist;
 import com.Provendor.Provendor.Profile;
 import com.Provendor.Provendor.R;
 import com.Provendor.Provendor.Searchpagevideos;
@@ -113,7 +114,7 @@ public class LoginActivity2 extends AppCompatActivity {
 
                             finish();
 
-                            startActivity(new Intent(LoginActivity2.this, Profile.class));
+                            startActivity(new Intent(LoginActivity2.this, Diseaselist.class));
 
 
                         }else {
