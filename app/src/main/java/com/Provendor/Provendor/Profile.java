@@ -192,6 +192,7 @@ public class Profile extends AppCompatActivity {
                         }
                     }
                 });
+
         pictureDialog.show();
     }
 
