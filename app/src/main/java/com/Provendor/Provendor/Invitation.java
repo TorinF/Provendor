@@ -1,6 +1,10 @@
 package com.Provendor.Provendor;
 
+
 import com.google.firebase.firestore.PropertyName;
+
+import java.util.Calendar;
+
 
 public class Invitation {
     private String sender;
@@ -13,10 +17,10 @@ public class Invitation {
         time = "";
     }
 
-    public Invitation(String sender, String recipient, String time) {
+    public Invitation(String sender, String recipient) {
         this.sender = sender;
         this.recipient = recipient;
-        this.time = time;
+        this.time = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
     }
 
     //Getters
