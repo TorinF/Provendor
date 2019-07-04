@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.Provendor.Provendor.Diseaselist;
 
+import com.Provendor.Provendor.Profile;
 import com.Provendor.Provendor.ProfileClass;
 import com.Provendor.Provendor.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -169,7 +170,7 @@ public class loginactivity extends AppCompatActivity {
 
                                 finish();
 
-                                startActivity(new Intent(loginactivity.this, Diseaselist.class));
+                                startActivity(new Intent(loginactivity.this, Profile.class));
 
 
                             }else{

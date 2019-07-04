@@ -42,7 +42,7 @@ public class ViewProfile extends AppCompatActivity {
 
 
         //Friend Request button and actions
-        friendBut = findViewById(R.id.friendBut);
+        friendBut = findViewById(R.id.friendbutton);
 
         //Change the button if Friend request is pending
         {
@@ -56,7 +56,7 @@ public class ViewProfile extends AppCompatActivity {
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        friendBut.setText(R.string.pending);
+                        friendBut.setText("Pending");
                         //Grey background
                         friendBut.setBackgroundColor(Color.parseColor("#cccccc"));
                         //Can't send more requests

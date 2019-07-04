@@ -92,7 +92,7 @@
         app:layout_constraintTop_toBottomOf="@+id/vids" />
 
     <Button
-        android:id="@+id/friendBut"
+        android:id="@+id/friendbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

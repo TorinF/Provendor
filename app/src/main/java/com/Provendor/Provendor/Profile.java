@@ -1,30 +1,45 @@
 package com.Provendor.Provendor;
 
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.adapters.TimePickerBindingAdapter;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,9 +55,11 @@ public class Profile extends AppCompatActivity {
     private TextView username;
     private TextView userID;
     Uri contentURI;
+    ImageView imagevi;
+    UploadTask mUploadTask;
     private TextView vids;
     private static final String VIDEO_DIRECTORY = "/demonuts";
-
+    Button uploadbutton;
     private TextView ques;
     private TextView friends;
     private TextView followers;
@@ -59,7 +76,9 @@ public class Profile extends AppCompatActivity {
         uid = user.getUid();
         userID = (TextView) findViewById(R.id.UserID1);
         vids = (TextView) findViewById(R.id.vids);
+        imagevi = (ImageView) findViewById(R.id.displayImage);
         ques = (TextView) findViewById(R.id.qs);
+        uploadbutton = (Button) findViewById(R.id.button5);
         friends = (TextView) findViewById(R.id.friends);
         followers = (TextView) findViewById(R.id.followers);
 
@@ -78,47 +97,97 @@ public class Profile extends AppCompatActivity {
             }
         });
         changeProfilePic = (Button) findViewById(R.id.button4);
-        changeProfilePic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPictureDialog();
-            }
-        });
+
         // if (owner!=null) {
 
         // }
+        changeProfilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFileChooser();
+            }
+        });
+
+
+        uploadbutton.setOnClickListener(new View.OnClickListener()
+
+    {
+        @Override
+        public void onClick (View v){
+        if (mUploadTask != null && mUploadTask.isInProgress()) {
+            Toast.makeText(Profile.this, "Upload in progress", Toast.LENGTH_SHORT).show();
+        } else {
+            uploadFile();
+        }
     }
+    });
+}
+
+
+
+
+    private void openFileChooser(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+    }
+    public static final int PICK_IMAGE = 1;
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        Log.d("result", "" + resultCode);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == this.RESULT_CANCELED) {
-            Log.d("what", "cancle");
-            return;
-        }
 
-        if (requestCode == GALLERY) {
-            Log.d("what", "gale");
-            if (data != null) {
-                contentURI = data.getData();
-
-                String selectedVideoPath = getPath(contentURI);
-                Log.d("path", selectedVideoPath);
-                saveVideoToInternalStorage(selectedVideoPath);
-
-
-            }
-
-        } else if (requestCode == CAMERA) {
+        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
             contentURI = data.getData();
-            String recordedVideoPath = getPath(contentURI);
-            Log.d("frrr", recordedVideoPath);
-            saveVideoToInternalStorage(recordedVideoPath);
 
+            Glide.with(this).load(contentURI).into(imagevi);
         }
     }
+
+    private String getFileExtension(Uri uri) {
+        ContentResolver cR = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cR.getType(uri));
+    }
+
+    private void uploadFile() {
+        final StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        final StorageReference photoRefy = storageRef.child("user/" + uid + "/images/" + System.currentTimeMillis() + ".jpg");
+        if (contentURI != null) {
+
+
+         mUploadTask= photoRefy.putFile(contentURI);
+            Task<Uri> urlTask = mUploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
+                    }
+
+                    // Continue with the task to get the download URL
+                    return photoRefy.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        Uri downloadUri = task.getResult();
+                        String downloadURL = downloadUri.toString();
+                    } else {
+                        // Handle failures
+                        // ...
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
 
     private void saveVideoToInternalStorage(String filePath) {
 
