@@ -18,9 +18,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class ViewProfile extends AppCompatActivity {
 
     private Button friendBut;
@@ -54,7 +51,7 @@ public class ViewProfile extends AppCompatActivity {
             String viewedUser = viewedProfile.getUser();
 
             DocumentReference invite = db.collection("userdata").document(viewer).collection("requests").document(viewedUser);
-
+//TODO: Prevent users from friending themselves
             //if there is friend request, displays pending
             invite.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override

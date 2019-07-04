@@ -147,7 +147,7 @@ public class PlaceholderFragment extends Fragment {
             buttonaccept.setOnClickListener(new android.view.View.OnClickListener() {
                 @Override
                 public void onClick(android.view.View view) {
-                    //TODO:logic here to accept/deny FriendRequest. Delete pending and invitations node, and add each other to userdata/useruid/friends node if they become friends. Send notification to other user with recipients decision (See Notification Class).
+                    //TODO:logic here to accept/deny FriendRequest. Delete pending and invitations node, and add each other to userdata/useruid/friends node if they become friends. Send notification to other user with recipients decision (See Notification Class). Delete this notification from user's node when the user clicks on the button.
                     Context context = getContext();
                     CharSequence text = "You Clicked on the button!";
                     int duration = Toast.LENGTH_SHORT;
