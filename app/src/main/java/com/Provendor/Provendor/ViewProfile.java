@@ -15,7 +15,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ViewProfile extends AppCompatActivity {
 
@@ -48,6 +52,7 @@ public class ViewProfile extends AppCompatActivity {
         {
             String viewer = currentViewer.getUid();
             String viewedUser = viewedProfile.getUser();
+
             DocumentReference invite = db.collection("userdata").document(viewer).collection("requests").document(viewedUser);
 
             //if there is friend request, displays pending
@@ -76,6 +81,23 @@ public class ViewProfile extends AppCompatActivity {
                         //Add invite to sender's and reciever's nodes
                         db.collection("userdata").document(sender).collection("requests").document(recipient).set(invite);
                         db.collection("userdata").document(recipient).collection("pending").document(sender).set(invite);
+                        //Add notification to reciever node
+                        Notification invitenotification=new Notification(invite);
+                        db.collection("userdata").document(recipient).collection("notifications").document("notifications").collection("notifications").add(invitenotification);
+
+                        DocumentReference storyRef = db.collection("stories").document("hello-world");
+
+
+                        DocumentReference RecipientDocument =     db.collection("userdata").document(recipient).collection("notifications").document("notifications");
+                        RecipientDocument.update("unreadInbox", FieldValue.increment(1));
+
+
+                        friendBut.setText("Pending");
+
+                        //Grey background
+                        friendBut.setBackgroundColor(Color.parseColor("#cccccc"));
+                        //Can't send more requests
+                        friendBut.setClickable(false);
                     }
                 }
         );

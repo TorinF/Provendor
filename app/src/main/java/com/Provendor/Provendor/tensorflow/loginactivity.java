@@ -21,6 +21,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.Provendor.Provendor.Diseaselist;
 
+import com.Provendor.Provendor.Inbox;
+import com.Provendor.Provendor.Notification;
 import com.Provendor.Provendor.Profile;
 import com.Provendor.Provendor.ProfileClass;
 import com.Provendor.Provendor.R;
@@ -161,7 +163,10 @@ public class loginactivity extends AppCompatActivity {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 uid = user.getUid();
                                 newUser = new ProfileClass(uid,0,0,"",null,0,0,0,1,0);
+                                Inbox newInbox =new Inbox();
+
                                 db.collection("userdata").document(uid).set(newUser);
+                                db.collection("userdata").document(uid).collection("notifications").document("notifications").set(newInbox);
 
                                 Toast.makeText(loginactivity.this, "registration successful",
 

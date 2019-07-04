@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,20 +22,29 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 
+import static android.view.View.VISIBLE;
+
 public class ProfileList extends AppCompatActivity {
 
-
+   private TextView notificationnumber;
     private TextView textView;
+    private int notifications;
     private FirebaseFirestore mDatabaseRef;
     private Button button;
     private Query mChartsQuery;
+    private DocumentReference docRef;
     private RecyclerView mRecycler;
     public static ProfileClass currentUpload;
     private ImageView imageView;
@@ -44,6 +54,7 @@ public class ProfileList extends AppCompatActivity {
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private FirestoreRecyclerAdapter<ProfileClass, ProductViewHolder> adapter;
     private ViewFlipper VF;
+    private Inbox currentInbox;
 
     @Override
 
@@ -119,12 +130,50 @@ public class ProfileList extends AppCompatActivity {
                     case R.id.Social:
                         startActivity(new Intent(ProfileList.this, Videolists.class));
                         break;
+                    case R.id.Inbox:
+                        startActivity(new Intent(ProfileList.this, Inboxandmessages.class));
+                        break;
 
 
                 }
                 return false;
             }
         });
+
+        BottomNavigationMenuView mbottomNavigationMenuView =
+                (BottomNavigationMenuView) bottomNavigationView.getChildAt(0);
+
+        View view = mbottomNavigationMenuView.getChildAt(3);
+
+        BottomNavigationItemView itemView = (BottomNavigationItemView) view;
+
+        View cart_badge = LayoutInflater.from(this)
+                .inflate(R.layout.activity_inboximage,
+                        mbottomNavigationMenuView, false);
+         notificationnumber=cart_badge.findViewById(R.id.cart_badge);
+        notificationnumber.setText("0");
+         docRef = rootRef.collection("userdata").document(useruid).collection("notifications").document("notifications");
+        notifications=0;
+
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                currentInbox = documentSnapshot.toObject(Inbox.class);
+                 notifications=currentInbox.getUnreadInbox()+currentInbox.getUnreadMessages();
+                notificationnumber.setText(String.valueOf(notifications));
+                notificationnumber.setVisibility(View.VISIBLE);
+            }
+        });
+       /* changing the number of notifications*/
+       if (notifications==0)
+       {
+           notificationnumber.setVisibility(View.INVISIBLE);
+       }
+       if (notifications!=0)
+       {
+
+       }
+        itemView.addView(cart_badge);
         bottomNavigationView.getMenu().findItem(R.id.Diagnoses).setChecked(true);
         bottomNavigationView.setSelectedItemId(R.id.Diagnoses);
 
@@ -134,6 +183,19 @@ public class ProfileList extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         adapter.startListening();
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                currentInbox = documentSnapshot.toObject(Inbox.class);
+                notifications=currentInbox.getUnreadInbox()+currentInbox.getUnreadMessages();
+                notificationnumber.setText(String.valueOf(notifications));
+                notificationnumber.setVisibility(View.VISIBLE);
+            }
+        });
+        if (notifications==0)
+        {
+            notificationnumber.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override

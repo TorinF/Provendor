@@ -8,8 +8,23 @@ android:padding="12dp"
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:layout_marginBottom="25dp">
+        android:layout_marginBottom="25dp"
+        android:padding="8dp">
+
+        <Button
+            android:id="@+id/button6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Accept"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/button7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/button6"
+            android:text="Deny"
+            android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/person_photo"
