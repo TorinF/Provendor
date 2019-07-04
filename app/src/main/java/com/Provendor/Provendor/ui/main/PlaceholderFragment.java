@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -14,36 +13,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.Provendor.Provendor.MainActivity;
 import com.Provendor.Provendor.Notification;
-import com.Provendor.Provendor.ProfileClass;
-import com.Provendor.Provendor.ProfileList;
 import com.Provendor.Provendor.R;
-import com.Provendor.Provendor.Videolists;
 import com.Provendor.Provendor.ViewProfile;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.material.bottomnavigation.BottomNavigationItemView;
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
-
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -74,7 +62,7 @@ public class PlaceholderFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         String useruid = currentUser.getUid();
-        RecyclerView recyclerView = (RecyclerView)getView().findViewById(R.id.notificationlist);
+                RecyclerView recyclerView = getView().findViewById(R.id.notificationlist);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(llm);
@@ -97,7 +85,7 @@ public class PlaceholderFragment extends Fragment {
             @Override
             public PlaceholderFragment.ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 LayoutInflater inflater = getLayoutInflater();
-                LinearLayout mainLayout = (LinearLayout) getView().findViewById(R.id.linear);
+                LinearLayout mainLayout = getView().findViewById(R.id.linear);
                 android.view.View myLayout = inflater.inflate(R.layout.recyclerview, mainLayout, false);
                 android.view.View views = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_inboxandmessages, parent, false);
                 return new PlaceholderFragment.ProductViewHolder(myLayout);
@@ -144,7 +132,7 @@ public class PlaceholderFragment extends Fragment {
             view = itemView;
         }
 
-        void setProductName(final Notification productName) {
+        void setProductName(final Notification productName) { //setting each item of the recyclerview
             CardView cview = view.findViewById(R.id.cardview);
             textView = view.findViewById(R.id.person_name);
             textView.setText(productName.gettype());
@@ -159,7 +147,7 @@ public class PlaceholderFragment extends Fragment {
             buttonaccept.setOnClickListener(new android.view.View.OnClickListener() {
                 @Override
                 public void onClick(android.view.View view) {
-                        ///logic here to get username and open up profile
+                    //TODO:logic here to accept/deny FriendRequest. Delete pending and invitations node, and add each other to userdata/useruid/friends node if they become friends. Send notification to other user with recipients decision (See Notification Class).
                     Context context = getContext();
                     CharSequence text = "You Clicked on the button!";
                     int duration = Toast.LENGTH_SHORT;
@@ -174,9 +162,11 @@ public class PlaceholderFragment extends Fragment {
             cview.setOnClickListener(new android.view.View.OnClickListener() {
                 @Override
                 public void onClick(android.view.View view) {
-                  if(productName.gettype()=="friendreq")
+                    if (productName.gettype() == "friendreq") {
                       ///logic here to get username and open up profile
-                    startActivity(new Intent(getActivity(), ViewProfile.class));
+                        startActivity(new Intent(getActivity(), ViewProfile.class)); //TODO: If user clicks the item, and the type is a friendrequest, it should send the user to the friend requester's profile
+
+                    }
                     Context context = getContext();
                     CharSequence text = "You Clicked on the item !";
                     int duration = Toast.LENGTH_SHORT;
