@@ -51,7 +51,7 @@ public class ViewProfile extends AppCompatActivity {
             String viewedUser = viewedProfile.getUser();
 
             DocumentReference invite = db.collection("userdata").document(viewer).collection("requests").document(viewedUser);
-//TODO: Prevent users from friending themselves
+            //TODO: Prevent users from friending themselves
             //if there is friend request, displays pending
             invite.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
@@ -68,6 +68,21 @@ public class ViewProfile extends AppCompatActivity {
             });
         }
 
+
+        //Check if Profile is the user himself
+        {
+
+            String viewer = currentViewer.getUid();
+            String viewedUser = viewedProfile.getUser();
+
+            if (viewer == viewedUser) {
+                friendBut.setClickable(false);
+                //Grey color
+                friendBut.setBackgroundColor(Color.parseColor("#cccccc"));
+                friendBut.setText("Cannot Friend");
+            }
+        }
+
         friendBut.setOnClickListener(
                 new View.OnClickListener() {
                     public void onClick(View v) {
@@ -78,14 +93,16 @@ public class ViewProfile extends AppCompatActivity {
                         //Add invite to sender's and reciever's nodes
                         db.collection("userdata").document(sender).collection("requests").document(recipient).set(invite);
                         db.collection("userdata").document(recipient).collection("pending").document(sender).set(invite);
+
+
                         //Add notification to reciever node
-                        Notification invitenotification=new Notification(invite);
+                        Notification invitenotification = new Notification(invite);
                         db.collection("userdata").document(recipient).collection("notifications").document("notifications").collection("notifications").add(invitenotification);
 
                         DocumentReference storyRef = db.collection("stories").document("hello-world");
 
 
-                        DocumentReference RecipientDocument =     db.collection("userdata").document(recipient).collection("notifications").document("notifications");
+                        DocumentReference RecipientDocument = db.collection("userdata").document(recipient).collection("notifications").document("notifications");
                         RecipientDocument.update("unreadInbox", FieldValue.increment(1));
 
 

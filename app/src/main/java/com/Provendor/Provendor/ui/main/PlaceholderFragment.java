@@ -37,12 +37,12 @@ import com.google.firebase.storage.FirebaseStorage;
  * A placeholder fragment containing a simple view.
  */
 public class PlaceholderFragment extends Fragment {
+    public static Notification currentUpload;
     private TextView textView;
     private FirebaseFirestore mDatabaseRef;
     private Button button;
     private Query mChartsQuery;
     private RecyclerView mRecycler;
-    public static Notification currentUpload;
     private ImageView imageView;
     private FirebaseAuth mAuth;
     private PlayerView playerView;
@@ -50,19 +50,24 @@ public class PlaceholderFragment extends Fragment {
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private FirestoreRecyclerAdapter<Notification, PlaceholderFragment.ProductViewHolder> adapter;
     private ViewFlipper VF;
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            return inflater.inflate(R.layout.fragment_inboxandmessages, container, false);
-        }
-            @Override
-            public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    private FirebaseFirestore db;
+    private FirebaseUser currentUser;
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_inboxandmessages, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
 
         mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        db = FirebaseFirestore.getInstance();
+        currentUser = mAuth.getCurrentUser();
         String useruid = currentUser.getUid();
-                RecyclerView recyclerView = getView().findViewById(R.id.notificationlist);
+        RecyclerView recyclerView = getView().findViewById(R.id.notificationlist);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(llm);
@@ -95,14 +100,10 @@ public class PlaceholderFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
 
-
-
-
-
     }
 
     @Override
-     public void onStart() {
+    public void onStart() {
         super.onStart();
         adapter.startListening();
     }
@@ -139,8 +140,8 @@ public class PlaceholderFragment extends Fragment {
             imageView = (view.findViewById(R.id.person_photo));
             TextView textViewy = view.findViewById(R.id.person_age);
             textViewy.setText(String.valueOf(productName.getuseruid()));
-            Button buttonaccept= view.findViewById(R.id.button6);
-            Button buttondeny= view.findViewById(R.id.button7);
+            Button buttonaccept = view.findViewById(R.id.button6);
+            Button buttondeny = view.findViewById(R.id.button7);
 
             buttonaccept.setVisibility(View.VISIBLE);
             buttondeny.setVisibility(View.VISIBLE);
@@ -148,6 +149,11 @@ public class PlaceholderFragment extends Fragment {
                 @Override
                 public void onClick(android.view.View view) {
                     //TODO:logic here to accept/deny FriendRequest. Delete pending and invitations node, and add each other to userdata/useruid/friends node if they become friends. Send notification to other user with recipients decision (See Notification Class). Delete this notification from user's node when the user clicks on the button.
+
+                    String friended = productName.getuseruid();
+                    String sender = currentUser.getUid();
+                    db.collection("userdata").document(sender).collection("requests").document(friended).delete();
+                    db.collection("userdata").document(friended).collection("pending").document(sender).delete();
                     Context context = getContext();
                     CharSequence text = "You Clicked on the button!";
                     int duration = Toast.LENGTH_SHORT;
@@ -163,7 +169,7 @@ public class PlaceholderFragment extends Fragment {
                 @Override
                 public void onClick(android.view.View view) {
                     if (productName.gettype() == "friendreq") {
-                      ///logic here to get username and open up profile
+                        ///logic here to get username and open up profile
                         startActivity(new Intent(getActivity(), ViewProfile.class)); //TODO: If user clicks the item, and the type is a friendrequest, it should send the user to the friend requester's profile
 
                     }
@@ -177,4 +183,4 @@ public class PlaceholderFragment extends Fragment {
             });
         }
     }
-    }
+}
