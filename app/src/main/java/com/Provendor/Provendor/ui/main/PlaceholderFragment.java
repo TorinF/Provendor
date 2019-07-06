@@ -21,14 +21,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.Provendor.Provendor.Notification;
+import com.Provendor.Provendor.ProfileClass;
+import com.Provendor.Provendor.ProfileList;
 import com.Provendor.Provendor.R;
 import com.Provendor.Provendor.ViewProfile;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
@@ -164,6 +170,8 @@ public class PlaceholderFragment extends Fragment {
                     //Send notification
                     db.collection("userdata").document(friended).collection("notifications").document("notifications").collection("notifications").add(notification);
 
+                    DocumentReference RecipientDocument = db.collection("userdata").document(friended).collection("notifications").document("notifications");
+                    RecipientDocument.update("unreadInbox", FieldValue.increment(1));
 
                     Context context = getContext();
                     CharSequence text = "You Clicked on the button!";
@@ -193,6 +201,8 @@ public class PlaceholderFragment extends Fragment {
 
                     //Send notification
                     db.collection("userdata").document(friended).collection("notifications").document("notifications").collection("notifications").add(notification);
+                    DocumentReference RecipientDocument = db.collection("userdata").document(friended).collection("notifications").document("notifications");
+                    RecipientDocument.update("unreadInbox", FieldValue.increment(1));
                 }
 
             });
@@ -201,10 +211,22 @@ public class PlaceholderFragment extends Fragment {
             cview.setOnClickListener(new android.view.View.OnClickListener() {
                 @Override
                 public void onClick(android.view.View view) {
-                    if (productName.gettype() == "friendreq") {
+                    if (productName.gettype() == "friendReq") {
                         ///logic here to get username and open up profile
-                        startActivity(new Intent(getActivity(), ViewProfile.class));
                         //TODO: If user clicks the item, and the type is a friendrequest, it should send the user to the friend requester's profile
+                        String uid = productName.getuseruid();
+                        DocumentReference docRef = db.collection("userdata").document(uid);
+
+                        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                ProfileList.currentUpload = documentSnapshot.toObject(ProfileClass.class);
+                                startActivity(new Intent(getActivity(), ViewProfile.class));
+                            }
+                        });
+
+
+
                     }
                     Context context = getContext();
                     CharSequence text = "You Clicked on the item !";

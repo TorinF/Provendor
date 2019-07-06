@@ -99,7 +99,6 @@ public class ViewProfile extends AppCompatActivity {
                         Notification invitenotification = new Notification(invite);
                         db.collection("userdata").document(recipient).collection("notifications").document("notifications").collection("notifications").add(invitenotification);
 
-                        DocumentReference storyRef = db.collection("stories").document("hello-world");
 
 
                         DocumentReference RecipientDocument = db.collection("userdata").document(recipient).collection("notifications").document("notifications");
