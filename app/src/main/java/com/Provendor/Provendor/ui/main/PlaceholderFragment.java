@@ -152,8 +152,19 @@ public class PlaceholderFragment extends Fragment {
 
                     String friended = productName.getuseruid();
                     String sender = currentUser.getUid();
+
+                    //Delete pending nodes
                     db.collection("userdata").document(sender).collection("requests").document(friended).delete();
                     db.collection("userdata").document(friended).collection("pending").document(sender).delete();
+
+                    //Create notification
+                    String message = sender + " has accepted your friend request";
+                    Notification notification = new Notification(message, sender, "accept");
+
+                    //Send notification
+                    db.collection("userdata").document(friended).collection("notifications").document("notifications").collection("notifications").add(notification);
+
+
                     Context context = getContext();
                     CharSequence text = "You Clicked on the button!";
                     int duration = Toast.LENGTH_SHORT;
@@ -163,6 +174,28 @@ public class PlaceholderFragment extends Fragment {
 
                 }
             });
+
+            buttondeny.setOnClickListener(new android.view.View.OnClickListener() {
+                @Override
+                public void onClick(android.view.View view) {
+                    //TODO: delete pending nodes, notify rejection
+
+                    String friended = productName.getuseruid();
+                    String sender = currentUser.getUid();
+
+                    //Delete pending nodes
+                    db.collection("userdata").document(sender).collection("requests").document(friended).delete();
+                    db.collection("userdata").document(friended).collection("pending").document(sender).delete();
+
+                    //Create notification
+                    String message = sender + " has declined your friend request";
+                    Notification notification = new Notification(message, sender, "reject");
+
+                    //Send notification
+                    db.collection("userdata").document(friended).collection("notifications").document("notifications").collection("notifications").add(notification);
+                }
+
+            });
             meme(productName);
 
             cview.setOnClickListener(new android.view.View.OnClickListener() {
@@ -170,8 +203,8 @@ public class PlaceholderFragment extends Fragment {
                 public void onClick(android.view.View view) {
                     if (productName.gettype() == "friendreq") {
                         ///logic here to get username and open up profile
-                        startActivity(new Intent(getActivity(), ViewProfile.class)); //TODO: If user clicks the item, and the type is a friendrequest, it should send the user to the friend requester's profile
-
+                        startActivity(new Intent(getActivity(), ViewProfile.class));
+                        //TODO: If user clicks the item, and the type is a friendrequest, it should send the user to the friend requester's profile
                     }
                     Context context = getContext();
                     CharSequence text = "You Clicked on the item !";
