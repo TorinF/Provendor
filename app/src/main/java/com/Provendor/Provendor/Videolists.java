@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -28,6 +29,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -122,6 +124,26 @@ public class Videolists extends AppCompatActivity {
             }
 
         });
+        BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.home:
+                        //Add your action onClick
+                        break;
+                    case R.id.Diagnoses:
+                        startActivity(new Intent(Videolists.this, Diseaselist.class));
+                        break;
+
+
+                }
+                return false;
+            }
+        });
+        bottomNavigationView.setSelectedItemId(R.id.Social);
+        bottomNavigationView.getMenu().findItem(R.id.Social).setChecked(true);
 
 
 
@@ -165,11 +187,10 @@ public class Videolists extends AppCompatActivity {
             textView = view.findViewById(R.id.person_name);
             textView.setText(productName.getName());
             imageView= (view.findViewById(R.id.videophoto));
-            Glide.with(imageView.getContext()).load(storage.getReferenceFromUrl(productName.getImageUrl())).into(imageView);
              TextView textViewy= view.findViewById(R.id.person_age);
             textViewy.setText(productName.getDate());
 
-
+            meme(productName);
             cview.setOnClickListener(new android.view.View.OnClickListener() {
                 @Override
                 public void onClick(android.view.View view) {

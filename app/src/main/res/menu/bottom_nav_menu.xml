@@ -28,11 +28,13 @@
         app:showAsAction="ifRoom|withText" />
     <item
         android:id="@+id/Inbox"
-        android:title="Artists"
+        android:title="Inbox"
         android:enabled="true"
+        app:actionLayout="@layout/activity_inboximage"
 
-        android:icon="@drawable/baseline_inbox_white_18dp"
-        app:showAsAction="ifRoom|withText" />
+        android:icon="@android:drawable/ic_dialog_email"
+        app:showAsAction="ifRoom|withText"
+        />
 
     <item
         android:id="@+id/rewards"

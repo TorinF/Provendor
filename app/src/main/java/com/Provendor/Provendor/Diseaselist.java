@@ -11,6 +11,7 @@ import android.os.Bundle;
 
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,10 +19,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.Provendor.Provendor.tensorflow.LoginActivity2;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -43,6 +46,7 @@ public class Diseaselist extends AppCompatActivity {
     private FirestoreRecyclerAdapter<Upload, ProductViewHolder> adapter;
     private ViewFlipper VF;
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diseaselist);
@@ -106,8 +110,29 @@ public class Diseaselist extends AppCompatActivity {
             }
 
         });
+        BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.home:
+                        //Add your action onClick
+                        break;
+                    case R.id.Social:
+                        startActivity(new Intent(Diseaselist.this, Videolists.class));
+                        break;
+
+
+                }
+                return false;
+            }
+        });
+        bottomNavigationView.getMenu().findItem(R.id.Diagnoses).setChecked(true);
+        bottomNavigationView.setSelectedItemId(R.id.Diagnoses);
 
     }
+
     @Override
     protected void onStart() {
         super.onStart();
