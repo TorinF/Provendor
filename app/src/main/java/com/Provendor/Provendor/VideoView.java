@@ -17,10 +17,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 import android.widget.ViewFlipper;
 
 import com.Provendor.Provendor.tensorflow.loginactivity;
@@ -52,17 +54,22 @@ private SimpleExoPlayer player;
     public static boolean fromSearchy;
     private TextView textView;
     private FirebaseFirestore mDatabaseRef;
-    private Button button;
+    private Button pushCom;
     private Query mChartsQuery;
     private RecyclerView mRecycler;
     public static JSONObject videoy;
-    public static  Video currentUpload;
+    public   Video currentUpload;
     private ImageView imageView;
     private ActionBar toolbar;
     private FirebaseAuth mAuth;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private FirestoreRecyclerAdapter<Video, VideoView.ProductViewHolder> adapter;
     private ViewFlipper VF;
+    private ToggleButton like;
+    private ToggleButton dislike;
+    private EditText comment;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +80,6 @@ private SimpleExoPlayer player;
 
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -98,6 +104,53 @@ private SimpleExoPlayer player;
         }
 
         index.addObjectAsync(person,  null);
+
+        like = (ToggleButton) findViewById(R.id.likeTog);
+        dislike = findViewById(R.id.disTog);
+
+        like.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    if(currentUpload.getLikes()>=currentUpload.getDislikes()) {
+                        currentUpload.setLikes(currentUpload.getLikes() + 1);
+                    }
+                    else{
+                        currentUpload.setDislikes(currentUpload.getDislikes()-1);
+                    }
+                    dislike.setChecked(false);
+                }
+            }
+        });
+
+        dislike.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    if(currentUpload.getDislikes()>=currentUpload.getLikes()) {
+                        currentUpload.setDislikes(currentUpload.getDislikes() + 1);
+                    }
+                    else{
+                        currentUpload.setLikes(currentUpload.getLikes()-1);
+                    }
+                    like.setChecked(false);
+                }
+            }
+        });
+
+        comment = findViewById(R.id.commentTxt);
+
+        pushCom = findViewById(R.id.pushComment);
+
+        pushCom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                currentUpload.setComment(comment.toString());
+            }
+        });
+
+
+
 
 
 

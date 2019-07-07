@@ -29,4 +29,5 @@
     <string name="title_activity_inboxandmessages">Inboxandmessages</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
+    <string name="title_activity_video_player">VideoPlayer</string>
 </resources>

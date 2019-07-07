@@ -13,6 +13,7 @@ public class Video implements Parcelable {
     private String videoUrl;
     private String previewUrl;
     private String user;
+    private String comment;
     private int likes;
     private int dislikes;
     private String date;
@@ -38,6 +39,7 @@ public class Video implements Parcelable {
         out.writeString(date);
         out.writeString(category);
         out.writeString(currency);
+        out.writeString(comment);
         out.writeInt(likes);
 
         out.writeInt(length);
@@ -84,10 +86,11 @@ public class Video implements Parcelable {
         dislikes=0;
         views=0;
         time=System.currentTimeMillis();
+        comment = "";
         //empty constructor needed
     }
 
-    public Video(String namey, String imageUrly, String videoUrly, String Usery, int likesy, int dislikesy, int viewsy, String Currrency, String categorry, int lengthy, int costy, String previewy) {
+    public Video(String namey, String imageUrly, String videoUrly, String Usery, String commenty, int likesy, int dislikesy, int viewsy, String Currrency, String categorry, int lengthy, int costy, String previewy) {
         if (name.trim().equals("")) {
             name = "No Name";
         }
@@ -95,6 +98,7 @@ public class Video implements Parcelable {
         imageUrl=imageUrly;
         videoUrl=videoUrly;
         user=Usery;
+        comment = commenty;
         likes=likesy;
         dislikes=dislikesy;
         date=java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
@@ -130,6 +134,8 @@ public class Video implements Parcelable {
     public String getName() {
         return name;
     }
+    @PropertyName("comment")
+    public String getComment(){return comment;}
     @PropertyName("videoUrl")
     public String getVideoUrl() {
         return videoUrl;
@@ -190,6 +196,7 @@ public class Video implements Parcelable {
     public void setUser(String diseasey) {
         user = diseasey;
     }
+    public void setComment(String commenty){comment = commenty;}
 
 
     public void setImageUrl(String imageUrly) {
