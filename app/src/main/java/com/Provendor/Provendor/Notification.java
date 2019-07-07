@@ -27,7 +27,7 @@ public class Notification {
 
     public Notification(Invitation friendrequest){
         message="Has requested to be friends";
-        useruid=friendrequest.getRecipient();
+        useruid = friendrequest.getSender();
         type="friendReq";
         date =friendrequest.getTime();
     }
