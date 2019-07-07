@@ -148,9 +148,10 @@ public class PlaceholderFragment extends Fragment {
             textViewy.setText(String.valueOf(productName.getuseruid()));
             Button buttonaccept = view.findViewById(R.id.button6);
             Button buttondeny = view.findViewById(R.id.button7);
-
-            buttonaccept.setVisibility(View.VISIBLE);
-            buttondeny.setVisibility(View.VISIBLE);
+            if (productName.gettype().equals("friendReq")) {
+                buttonaccept.setVisibility(View.VISIBLE);
+                buttondeny.setVisibility(View.VISIBLE);
+            }
             buttonaccept.setOnClickListener(new android.view.View.OnClickListener() {
                 @Override
                 public void onClick(android.view.View view) {
@@ -211,7 +212,6 @@ public class PlaceholderFragment extends Fragment {
             cview.setOnClickListener(new android.view.View.OnClickListener() {
                 @Override
                 public void onClick(android.view.View view) {
-                    if (productName.gettype() == "friendReq") {
                         ///logic here to get username and open up profile
                         //TODO: If user clicks the item, and the type is a friendrequest, it should send the user to the friend requester's profile
                         String uid = productName.getuseruid();
@@ -225,16 +225,16 @@ public class PlaceholderFragment extends Fragment {
                             }
                         });
 
-
-
-                    }
                     Context context = getContext();
                     CharSequence text = "You Clicked on the item !";
                     int duration = Toast.LENGTH_SHORT;
 
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
+
                 }
+
+                
             });
         }
     }

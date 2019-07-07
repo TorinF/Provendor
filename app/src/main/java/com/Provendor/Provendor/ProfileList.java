@@ -1,11 +1,5 @@
 package com.Provendor.Provendor;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,6 +11,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -33,8 +33,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
-
-import static android.view.View.VISIBLE;
 
 public class ProfileList extends AppCompatActivity {
 
@@ -92,7 +90,7 @@ public class ProfileList extends AppCompatActivity {
             @Override
             public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 LayoutInflater inflater = getLayoutInflater();
-                LinearLayout mainLayout = (LinearLayout) findViewById(R.id.linear);
+                LinearLayout mainLayout = findViewById(R.id.linear);
                 android.view.View myLayout = inflater.inflate(R.layout.recyclerview, mainLayout, false);
                 android.view.View views = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_profile_list, parent, false);
                 return new ProductViewHolder(myLayout);
@@ -101,7 +99,7 @@ public class ProfileList extends AppCompatActivity {
         };
         recyclerView.setAdapter(adapter);
 
-        button = (Button) findViewById(R.id.button2);
+        button = findViewById(R.id.button2);
 
 
         button.setOnClickListener(new android.view.View.OnClickListener() {
@@ -118,7 +116,7 @@ public class ProfileList extends AppCompatActivity {
             }
 
         });
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -161,18 +159,16 @@ public class ProfileList extends AppCompatActivity {
                 currentInbox = documentSnapshot.toObject(Inbox.class);
                  notifications=currentInbox.getUnreadInbox()+currentInbox.getUnreadMessages();
                 notificationnumber.setText(String.valueOf(notifications));
-                notificationnumber.setVisibility(View.VISIBLE);
+                if (notifications != 0) {
+                    notificationnumber.setVisibility(View.VISIBLE);
+
+                }
+
             }
         });
        /* changing the number of notifications*/
-       if (notifications==0)
-       {
-           notificationnumber.setVisibility(View.INVISIBLE);
-       }
-       if (notifications!=0)
-       {
 
-       }
+
         itemView.addView(cart_badge);
         bottomNavigationView.getMenu().findItem(R.id.Diagnoses).setChecked(true);
         bottomNavigationView.setSelectedItemId(R.id.Diagnoses);
@@ -189,13 +185,13 @@ public class ProfileList extends AppCompatActivity {
                 currentInbox = documentSnapshot.toObject(Inbox.class);
                 notifications=currentInbox.getUnreadInbox()+currentInbox.getUnreadMessages();
                 notificationnumber.setText(String.valueOf(notifications));
-                notificationnumber.setVisibility(View.VISIBLE);
+                if (notifications != 0) {
+                    notificationnumber.setVisibility(View.VISIBLE);
+
+                }
             }
         });
-        if (notifications==0)
-        {
-            notificationnumber.setVisibility(View.INVISIBLE);
-        }
+
     }
 
     @Override
