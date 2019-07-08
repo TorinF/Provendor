@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -49,10 +50,11 @@ public class UploadVideo extends AppCompatActivity {
     private static ProgressDialog progressDialog;
     private VideoView videoView;
     private FirebaseAuth mAuth;
-private String uid;
+    private String uid;
     private FirebaseUser currentUser;
     private static final String VIDEO_DIRECTORY = "/demonuts";
     private int GALLERY = 1, CAMERA = 2;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +89,9 @@ private String uid;
 
         final StorageReference photoRef = storageRef.child("user/"+uid + "/videos/"+System.currentTimeMillis()+".mp4");
 // add File/URI
+        db = FirebaseFirestore.getInstance();
+        db.collection("userdata").document(uid).collection("videos").document("myvideos").set(UploadedVideo);
+
         if (contentURI != null)
         {
 

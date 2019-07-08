@@ -68,6 +68,9 @@ private SimpleExoPlayer player;
     private ToggleButton like;
     private ToggleButton dislike;
     private EditText comment;
+    private FirebaseFirestore db;
+    private String uid;
+    private int cnt = 0;
 
 
     @Override
@@ -82,7 +85,7 @@ private SimpleExoPlayer player;
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
         mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        final FirebaseUser currentUser = mAuth.getCurrentUser();
         String useruid = currentUser.getUid();
         RecyclerView recyclerView = findViewById(R.id.viewsundervideo);
         LinearLayoutManager llm = new LinearLayoutManager(this);
@@ -105,6 +108,15 @@ private SimpleExoPlayer player;
 
         index.addObjectAsync(person,  null);
 
+        db = FirebaseFirestore.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        uid = user.getUid();
+
+        db.collection("userdata").document(uid).collection("Videos").document("Videos").set(currentUpload);
+
+        if(cnt<1)
+            currentUpload.setViews(currentUpload.getViews()+1);
+
         like = (ToggleButton) findViewById(R.id.likeTog);
         dislike = findViewById(R.id.disTog);
 
@@ -119,6 +131,7 @@ private SimpleExoPlayer player;
                         currentUpload.setDislikes(currentUpload.getDislikes()-1);
                     }
                     dislike.setChecked(false);
+                    db.collection("videos").document(/*plugin however yall are naming the videos*/).collection("likes").document("users").set(currentUser);
                 }
             }
         });
@@ -134,6 +147,7 @@ private SimpleExoPlayer player;
                         currentUpload.setLikes(currentUpload.getLikes()-1);
                     }
                     like.setChecked(false);
+                    db.collection("videos").document(/*same as above*/).collection("dislikes").document("users").set(currentUser);
                 }
             }
         });
