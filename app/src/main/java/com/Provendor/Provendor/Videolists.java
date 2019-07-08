@@ -1,30 +1,22 @@
 package com.Provendor.Provendor;
 
 import android.content.Intent;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestManager;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -83,7 +75,7 @@ public class Videolists extends AppCompatActivity {
             @Override
             public Videolists.ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 LayoutInflater inflater = getLayoutInflater();
-                LinearLayout mainLayout = (LinearLayout) findViewById(R.id.linear);
+                LinearLayout mainLayout = findViewById(R.id.linear);
                 android.view.View myLayout = inflater.inflate(R.layout.videoviewy,mainLayout, false);
                 return new Videolists.ProductViewHolder(myLayout);
 
@@ -91,8 +83,8 @@ public class Videolists extends AppCompatActivity {
         };
         recyclerView.setAdapter(adapter);
 
-        final Button button = (Button) findViewById(R.id.button3);
-        final Button searchView = (Button) findViewById(
+        final Button button = findViewById(R.id.button3);
+        final Button searchView = findViewById(
                 R.id.searchbar1);
 
         button.setOnClickListener(new android.view.View.OnClickListener() {
@@ -124,7 +116,7 @@ public class Videolists extends AppCompatActivity {
             }
 
         });
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

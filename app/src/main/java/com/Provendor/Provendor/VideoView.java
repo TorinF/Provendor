@@ -2,17 +2,7 @@ package com.Provendor.Provendor;
 
 import android.content.Intent;
 import android.net.Uri;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +15,13 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.ViewFlipper;
 
-import com.Provendor.Provendor.tensorflow.loginactivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.algolia.search.saas.Client;
 import com.algolia.search.saas.Index;
 import com.bumptech.glide.Glide;
@@ -79,7 +75,7 @@ private SimpleExoPlayer player;
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
 
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -104,8 +100,7 @@ private SimpleExoPlayer player;
         }
 
         index.addObjectAsync(person,  null);
-
-        like = (ToggleButton) findViewById(R.id.likeTog);
+        like = findViewById(R.id.likeTogs);
         dislike = findViewById(R.id.disTog);
 
         like.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -171,14 +166,14 @@ private SimpleExoPlayer player;
             @Override
             public VideoView.ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 LayoutInflater inflater = getLayoutInflater();
-                LinearLayout mainLayout = (LinearLayout) findViewById(R.id.linearvideos);
+                LinearLayout mainLayout = findViewById(R.id.linearvideos);
                 android.view.View myLayout = inflater.inflate(R.layout.videobelowsearch,mainLayout, false);
                 return new VideoView.ProductViewHolder(myLayout);
 
             }
         };
         recyclerView.setAdapter(adapter);
-      final  Button searchView = (Button) findViewById(R.id.searchbarlist);
+        final Button searchView = findViewById(R.id.searchbarlist);
         searchView.setOnClickListener(new android.view.View.OnClickListener() {
 
             @Override

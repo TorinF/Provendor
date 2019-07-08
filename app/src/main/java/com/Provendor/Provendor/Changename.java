@@ -3,9 +3,8 @@ package com.Provendor.Provendor;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
-import android.provider.MediaStore;
-
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,13 +29,13 @@ public class Changename extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_changename);
-        email = (EditText)findViewById(R.id.login_email_input);
+        email = findViewById(R.id.login_email_input);
         Bitmap bitmap2 = ThumbnailUtils.createVideoThumbnail( UploadVideo.contentURI.getPath() , MediaStore.Images.Thumbnails.MINI_KIND );
 
-        password = (EditText)findViewById(R.id.login_password_input);
+        password = findViewById(R.id.login_password_input);
 
         mAuth = FirebaseAuth.getInstance();
-        button= (Button)findViewById(R.id.login);
+        button = findViewById(R.id.login);
         button.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -57,10 +56,12 @@ public class Changename extends AppCompatActivity {
         UploadVideo.UploadedVideo.setName(email.getText().toString().trim());
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
-        time = "" + System.currentTimeMillis();
+        long time2 = System.currentTimeMillis();
+        time = "" + time2;
         UploadVideo.UploadedVideo.setUser(uid);
+        UploadVideo.UploadedVideo.setTime1(time2);
         UploadVideo.UploadedVideo.setCategory(password.getText().toString().trim());
-        db.collection("videos").document(time).set(UploadVideo.UploadedVideo);
+        db.collection("videos").document(uid + time).set(UploadVideo.UploadedVideo);
         currentVideo=UploadVideo.UploadedVideo;
         startActivity(new Intent(Changename.this, VideoView.class));
 

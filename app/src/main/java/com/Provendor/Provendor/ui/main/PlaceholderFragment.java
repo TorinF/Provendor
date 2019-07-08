@@ -234,7 +234,7 @@ public class PlaceholderFragment extends Fragment {
 
                 }
 
-                
+
             });
         }
     }
