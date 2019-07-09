@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.Provendor.Provendor.VideoView">
+    tools:context="com.provendor.video.VideoView">
 
     <ImageView
         android:id="@+id/imageView"
@@ -30,14 +30,12 @@
         tools:layout_editor_absoluteY="16dp" />
 
 
-    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
+    <LinearLayout
+        android:id="@+id/linearvideos"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
 
-    android:id="@+id/linearvideos"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+        android:orientation="vertical">
 
 
         <SearchView
@@ -46,29 +44,62 @@
             android:layout_height="40dp"
             android:layout_alignStart="@+id/linearvideos"
             android:layout_alignTop="@+id/linearvideos"
-            android:visibility="visible" />
+            android:visibility="visible">
 
-    <com.google.android.exoplayer2.ui.PlayerView
-        android:id="@+id/player_view"
-        android:layout_width="match_parent"
-        android:layout_height="253dp"
+        </SearchView>
 
-        android:background="@android:color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:context="com.Provendor.Provendor.VideoView">
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/player_view"
+            android:layout_width="match_parent"
+            android:layout_height="253dp"
+
+            android:background="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            tools:context="com.provendor.Provendor.com.Provendor.VideoView">
 
 
-    </com.google.android.exoplayer2.ui.PlayerView>
+        </com.google.android.exoplayer2.ui.PlayerView>
+
+        <ToggleButton
+            android:id="@+id/likeTogs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ToggleButton"
+            android:textOff="Like"
+            android:textOn="Liked" />
+
+        <ToggleButton
+            android:id="@+id/disTog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ToggleButton"
+            android:textOff="Dislike"
+            android:textOn="Disliked" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/viewsundervideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/commentTxt"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="134dp"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine" />
+
+        <Button
+            android:id="@+id/pushComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/linearvideos"
+            android:text="Comment" />
 
 
     </LinearLayout>

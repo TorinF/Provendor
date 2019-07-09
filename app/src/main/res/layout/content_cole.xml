@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.Provendor.Provendor.cole"
+    tools:context="com.provendor.cole"
     tools:showIn="@layout/activity_cole">
 
 </android.support.constraint.ConstraintLayout>
