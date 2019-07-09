@@ -5,7 +5,7 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.PlaceholderFragment">
+    tools:context="com.provendor.ui.main.PlaceholderFragment">
 
 
 
@@ -25,7 +25,7 @@
             android:orientation="vertical"
             android:id ="@+id/linear"
             android:padding="16dp"
-            tools:context=".Diseaselist"
+            tools:context="com.provendor.diagnosis.Diseaselist"
             tools:orientation="vertical"
             >
 

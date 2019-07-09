@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.Provendor.Provendor.Videolists">
+    tools:context="com.provendor.video.Videolists">
 
     <ImageView
         android:id="@+id/imageView"
@@ -47,7 +47,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="16dp"
-        tools:context=".Diseaselist"
+        tools:context="com.provendor.diagnosis.Diseaselist"
         tools:orientation="vertical">
 
         <SearchView

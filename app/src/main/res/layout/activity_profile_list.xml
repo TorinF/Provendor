@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileList">
+    tools:context="com.provendor.users.ProfileList">
 
         <!--adding views to ViewFlipper-->
 
@@ -31,7 +31,7 @@
                 android:orientation="vertical"
                 android:id ="@+id/linear"
                 android:padding="16dp"
-                tools:context=".ProfileList"
+                tools:context="com.provendor.users.ProfileList"
                 tools:orientation="vertical"
                 >
 
