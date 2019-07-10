@@ -12,9 +12,12 @@ public class PersonRelations {
     private String uid;
     private String username;
     private String userimageurl;
+    public final static int NOTFRIENDS = 0;
+    public final static int PENDING = 1;
+    public final static int FRIENDED = 2;
 
     public PersonRelations() {
-        isfriend = 0;
+        isfriend = NOTFRIENDS;
         issubscribed = false;
         isblocked = false;
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
