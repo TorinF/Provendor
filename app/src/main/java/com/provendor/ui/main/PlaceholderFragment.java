@@ -158,15 +158,11 @@ public class PlaceholderFragment extends Fragment {
             }
             buttonaccept.setOnClickListener(new android.view.View.OnClickListener() {
                 @Override
-                public void onClick(android.view.View view) {
+                public void onClick(View view) {
                     //TODO:logic here to accept/deny FriendRequest.  Send notification to other user with recipients decision (See Notification Class). Delete this notification from user's node when the user clicks on the button.
 
                     final String friended = productName.getuseruid();
                     String sender = currentUser.getUid();
-
-                    //Delete pending nodes
-                    db.collection("userdata").document(sender).collection("requests").document(friended).delete();
-                    db.collection("userdata").document(friended).collection("pending").document(sender).delete();
 
                     //update relations
 
@@ -187,9 +183,9 @@ public class PlaceholderFragment extends Fragment {
                         }
                     });
 
-                    //Edit sender's node for them
+                    //Edit sender's relation node for them
                     //TODO:Determine if editing other users node is against database rules
-                    final DocumentReference friendRelation = db.collection("userdata").document(friended).collection("requests").document(sender);
+                    final DocumentReference friendRelation = db.collection("userdata").document(friended).collection("relations").document(sender);
                     friendRelation.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -231,10 +227,6 @@ public class PlaceholderFragment extends Fragment {
 
                     String friended = productName.getuseruid();
                     String sender = currentUser.getUid();
-
-                    //Delete pending nodes
-                    db.collection("userdata").document(sender).collection("requests").document(friended).delete();
-                    db.collection("userdata").document(friended).collection("pending").document(sender).delete();
 
                     //Create notification
                     String message = sender + " has declined your friend request";
