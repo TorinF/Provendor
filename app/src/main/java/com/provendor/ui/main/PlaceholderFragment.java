@@ -161,53 +161,55 @@ public class PlaceholderFragment extends Fragment {
                 public void onClick(View view) {
                     //TODO:logic here to accept/deny FriendRequest.  Send notification to other user with recipients decision (See Notification Class). Delete this notification from user's node when the user clicks on the button.
 
-                    final String friended = productName.getuseruid();
-                    String sender = currentUser.getUid();
+                    final String friendedID = productName.getuseruid();
+                    String userUid = currentUser.getUid();
 
                     //update relations
 
                     //Set accepted user relation to friends
-                    final DocumentReference relation = db.collection("userdata").document(sender).collection("relations").document(friended);
-                    relation.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    final DocumentReference relationRef =  db.collection("userdata").document(userUid).collection("relations").document(friendedID);
+                    final Task<DocumentSnapshot> relation = relationRef.get();
+                    relation.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                relation.update("isfriend", PersonRelations.FRIENDED);
+                                relationRef.update("isfriend", PersonRelations.FRIENDED);
                             } else {
                                 PersonRelations personRelations = new PersonRelations();
-                                personRelations.setUid(friended);
+                                personRelations.setUid(friendedID);
                                 personRelations.setIsfriend(PersonRelations.FRIENDED);
-                                relation.set(personRelations);
+                                relationRef.set(personRelations);
                             }
                         }
                     });
 
                     //Edit sender's relation node for them
                     //TODO:Determine if editing other users node is against database rules
-                    final DocumentReference friendRelation = db.collection("userdata").document(friended).collection("relations").document(sender);
-                    friendRelation.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    final DocumentReference friendRelationRef = db.collection("userdata").document(friendedID).collection("relations").document(userUid);
+                    final Task<DocumentSnapshot> friendRelation = relationRef.get();
+                    friendRelation.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                relation.update("isfriend", PersonRelations.FRIENDED);
+                                friendRelationRef.update("isfriend", PersonRelations.FRIENDED);
                             } else {
                                 PersonRelations personRelations = new PersonRelations();
-                                personRelations.setUid(friended);
+                                personRelations.setUid(friendedID);
                                 personRelations.setIsfriend(PersonRelations.FRIENDED);
-                                friendRelation.set(personRelations);
+                                friendRelationRef.set(personRelations);
                             }
                         }
                     });
 
                     //Create notification
-                    String message = sender + " has accepted your friend request";
-                    Notification notification = new Notification(message, sender, "accept");
+                    String message = userUid + " has accepted your friend request";
+                    Notification notification = new Notification(message, userUid, "accept");
 
                     //Send notification
-                    db.collection("userdata").document(friended).collection("notifications").document("notifications").collection("notifications").add(notification);
-                    DocumentReference RecipientDocument = db.collection("userdata").document(friended).collection("notifications").document("notifications");
+                    db.collection("userdata").document(friendedID).collection("notifications").document("notifications").collection("notifications").add(notification);
+                    DocumentReference RecipientDocument = db.collection("userdata").document(friendedID).collection("notifications").document("notifications");
                     RecipientDocument.update("unreadInbox", FieldValue.increment(1));
 
                     //Toast code

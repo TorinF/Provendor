@@ -48,19 +48,20 @@ public class ViewProfile extends AppCompatActivity {
 
         String viewerID = currentViewer.getUid();
         String viewedUserID = viewedProfile.getUser();
-        final DocumentReference relation = db.collection("userdata").document(viewerID).collection("relations").document(viewedUserID);
+        final DocumentReference relationRef =  db.collection("userdata").document(viewerID).collection("relations").document(viewedUserID);
+        final Task<DocumentSnapshot> relation = relationRef.get();
         //Change the friend button depending on friend status
         {
 
             //if there is friend request, displays pending
 
 
-            relation.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            relation.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        int fri = document.get("isfriend", Integer.class).intValue();
+                        int fri = document.get("isfriend", Integer.class);
                         if (fri == PersonRelations.PENDING) {
                             friendBut.setText("Pending");
                             //Grey background
@@ -107,17 +108,17 @@ public class ViewProfile extends AppCompatActivity {
 
 
                         //Extra code to check if a relation exists before setting pending status
-                        relation.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        relation.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 DocumentSnapshot document = task.getResult();
                                 if (document.exists()) {
-                                    relation.update("isfriend", PersonRelations.PENDING);
+                                    relationRef.update("isfriend", PersonRelations.PENDING);
                                 } else {
                                     PersonRelations personRelations = new PersonRelations();
                                     personRelations.setUid(recipient);
                                     personRelations.setIsfriend(PersonRelations.PENDING);
-                                    relation.set(personRelations);
+                                    relationRef.set(personRelations);
                                 }
                             }
                         });
