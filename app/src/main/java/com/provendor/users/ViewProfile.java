@@ -48,11 +48,10 @@ public class ViewProfile extends AppCompatActivity {
 
         String viewerID = currentViewer.getUid();
         String viewedUserID = viewedProfile.getUser();
-        final DocumentReference relation = db.collection("userdata").document(viewerID).collection("requests").document(viewedUserID);
+        final DocumentReference relation = db.collection("userdata").document(viewerID).collection("relations").document(viewedUserID);
         //Change the friend button depending on friend status
         {
 
-            //TODO: Prevent users from friending themselves
             //if there is friend request, displays pending
 
 
