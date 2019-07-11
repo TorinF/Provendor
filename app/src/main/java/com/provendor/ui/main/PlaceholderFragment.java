@@ -24,7 +24,9 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -35,6 +37,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.provendor.R;
 import com.provendor.users.Notification;
+import com.provendor.users.PersonRelations;
 import com.provendor.users.ProfileClass;
 import com.provendor.users.ProfileList;
 import com.provendor.users.ViewProfile;
@@ -148,6 +151,7 @@ public class PlaceholderFragment extends Fragment {
             textViewy.setText(String.valueOf(productName.getuseruid()));
             Button buttonaccept = view.findViewById(R.id.button6);
             Button buttondeny = view.findViewById(R.id.button7);
+
             if (productName.gettype().equals("friendReq")) {
                 buttonaccept.setVisibility(View.VISIBLE);
                 buttondeny.setVisibility(View.VISIBLE);
@@ -155,14 +159,51 @@ public class PlaceholderFragment extends Fragment {
             buttonaccept.setOnClickListener(new android.view.View.OnClickListener() {
                 @Override
                 public void onClick(android.view.View view) {
-                    //TODO:logic here to accept/deny FriendRequest. Delete pending and invitations node, and add each other to userdata/useruid/friends node if they become friends. Send notification to other user with recipients decision (See Notification Class). Delete this notification from user's node when the user clicks on the button.
+                    //TODO:logic here to accept/deny FriendRequest.  Send notification to other user with recipients decision (See Notification Class). Delete this notification from user's node when the user clicks on the button.
 
-                    String friended = productName.getuseruid();
+                    final String friended = productName.getuseruid();
                     String sender = currentUser.getUid();
 
                     //Delete pending nodes
                     db.collection("userdata").document(sender).collection("requests").document(friended).delete();
                     db.collection("userdata").document(friended).collection("pending").document(sender).delete();
+
+                    //update relations
+
+                    //Set accepted user relation to friends
+                    final DocumentReference relation = db.collection("userdata").document(sender).collection("relations").document(friended);
+                    relation.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                relation.update("isfriend", PersonRelations.FRIENDED);
+                            } else {
+                                PersonRelations personRelations = new PersonRelations();
+                                personRelations.setUid(friended);
+                                personRelations.setIsfriend(PersonRelations.FRIENDED);
+                                relation.set(personRelations);
+                            }
+                        }
+                    });
+
+                    //Edit sender's node for them
+                    //TODO:Determine if editing other users node is against database rules
+                    final DocumentReference friendRelation = db.collection("userdata").document(friended).collection("requests").document(sender);
+                    friendRelation.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                relation.update("isfriend", PersonRelations.FRIENDED);
+                            } else {
+                                PersonRelations personRelations = new PersonRelations();
+                                personRelations.setUid(friended);
+                                personRelations.setIsfriend(PersonRelations.FRIENDED);
+                                friendRelation.set(personRelations);
+                            }
+                        }
+                    });
 
                     //Create notification
                     String message = sender + " has accepted your friend request";
@@ -170,10 +211,10 @@ public class PlaceholderFragment extends Fragment {
 
                     //Send notification
                     db.collection("userdata").document(friended).collection("notifications").document("notifications").collection("notifications").add(notification);
-
                     DocumentReference RecipientDocument = db.collection("userdata").document(friended).collection("notifications").document("notifications");
                     RecipientDocument.update("unreadInbox", FieldValue.increment(1));
 
+                    //Toast code
                     Context context = getContext();
                     CharSequence text = "You Clicked on the button!";
                     int duration = Toast.LENGTH_SHORT;
@@ -187,7 +228,6 @@ public class PlaceholderFragment extends Fragment {
             buttondeny.setOnClickListener(new android.view.View.OnClickListener() {
                 @Override
                 public void onClick(android.view.View view) {
-                    //TODO: delete pending nodes, notify rejection
 
                     String friended = productName.getuseruid();
                     String sender = currentUser.getUid();
