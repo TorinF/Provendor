@@ -18,7 +18,7 @@ import com.provendor.R;
 
 public class Diagnosis extends AppCompatActivity {
     FirebaseStorage storage = FirebaseStorage.getInstance();
-    Upload meme;
+    Upload upload;
     ImageButton button;
     TextView textElement;
     ImageView imageView;
@@ -28,18 +28,18 @@ public class Diagnosis extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diagnosis);
-        meme = MainActivity.Companion.a();
+        upload = MainActivity.Companion.a();
 
         imageView = (findViewById(R.id.imageCaptured));
 
         GlideApp.with(this /* context */)
 
-                .load(storage.getReferenceFromUrl(meme.getImageUrl()))
+                .load(storage.getReferenceFromUrl(upload.getImageUrl()))
 
                 .into(imageView);
 
         textElement = findViewById(R.id.textResult);
-        textElement.setText(meme.getDisease());
+        textElement.setText(upload.getDisease());
         button = findViewById(R.id.imageclose);
         button.setOnClickListener(new View.OnClickListener() {
 
