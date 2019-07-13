@@ -32,7 +32,7 @@ public class Notification {
         date = friendrequest.getTime();
     }
 
-    public Notification(String type, PersonRelations Personsrelated) {
+    public Notification(String type, PersonRelations Personsrelated) { //pass your personsrelated object and the type of notification you want to send to create the object
         useruid = Personsrelated.getUid();
         date = Personsrelated.getTime();
         if (type.equals("request")) {
@@ -43,10 +43,7 @@ public class Notification {
             message = Personsrelated.getUsername() + " has subscribed to you";
             type = "subscribed";
         }
-        if (type.equals("unfriended")) {
-            message = Personsrelated.getUsername() + " has unfriended you";
-            type = "unfriended";
-        }
+
         if (type.equals("friends")) {
             message = Personsrelated.getUsername() + " has accepted your friend request";
             type = "friends";
