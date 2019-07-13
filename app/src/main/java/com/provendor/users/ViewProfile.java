@@ -48,7 +48,7 @@ public class ViewProfile extends AppCompatActivity {
 
         String viewerID = currentViewer.getUid();
         String viewedUserID = viewedProfile.getUser();
-        final DocumentReference relationRef =  db.collection("userdata").document(viewerID).collection("relations").document(viewedUserID);
+        final DocumentReference relationRef = db.collection("userdata").document(viewerID).collection("relations").document(viewedUserID);
         final Task<DocumentSnapshot> relationTask = relationRef.get();
         //Change the friend button depending on friend status
         {
@@ -62,18 +62,19 @@ public class ViewProfile extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         PersonRelations relation = document.toObject(PersonRelations.class);
-                        if (relation.getIsfriend()== PersonRelations.PENDING) {
+                        if (relation.getIsfriend() == PersonRelations.PENDING) {
                             friendBut.setText("Pending");
                             //Grey background
                             friendBut.setBackgroundColor(Color.parseColor("#cccccc"));
                             //Can't send more requests
                             friendBut.setClickable(false);
                         }
-                        if (relation.getIsfriend()== PersonRelations.FRIENDED) {
+                        if (relation.getIsfriend() == PersonRelations.FRIENDED) {
                             //TODO: Add unfriend funtion
                             friendBut.setText("Unfriend");
                             //Grey background
                             friendBut.setBackgroundColor(Color.parseColor("#cccccc"));
+                            friendBut.setClickable(false);
                         }
 
                     }
