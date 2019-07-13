@@ -1,0 +1,83 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageButton
+        android:id="@id/exo_play"
+        style="@style/ExoMediaButton.Play"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_gravity="center"
+        android:scaleType="fitCenter" />
+
+    <com.google.android.exoplayer2.ui.DefaultTimeBar
+        android:id="@id/exo_progress"
+        android:layout_width="match_parent"
+        android:layout_height="26dp"
+        android:layout_gravity="bottom|left"
+        android:layout_weight="1"
+
+        android:translationY="2dp"
+        app:played_color="@color/colorPrimaryDark"
+
+        app:unplayed_color="#3324292E" />
+
+    <ImageButton
+        android:id="@id/exo_pause"
+        style="@style/ExoMediaButton.Pause"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_gravity="center"
+        android:scaleType="fitCenter" />
+
+    <ImageButton
+        android:id="@id/exo_rew"
+        style="@style/ExoMediaButton.Rewind"
+        android:layout_gravity="center|left"
+        android:tint="@color/colorPrimaryDark"
+        android:tintMode="src_in" />
+
+
+    <ImageButton
+        android:id="@id/exo_ffwd"
+        style="@style/ExoMediaButton.FastForward"
+        android:layout_gravity="center|right"
+        android:tint="@color/colorPrimaryDark"
+        android:tintMode="src_in" />
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:translationY="11dp">
+
+        <TextView
+            android:id="@id/exo_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:textColor="#ff323232"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@id/exo_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:textColor="#ff323232"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</FrameLayout>

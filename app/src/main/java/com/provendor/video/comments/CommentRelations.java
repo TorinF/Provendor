@@ -16,4 +16,5 @@ public class CommentRelations {
     public void setLikeaffinity(int likeaffinity) {
         this.likeaffinity = likeaffinity;
     }
+
 }

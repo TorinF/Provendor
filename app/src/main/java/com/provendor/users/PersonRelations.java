@@ -4,11 +4,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.PropertyName;
 
+import java.util.Calendar;
+
 //path = userdata/useridofperson1/relations/useridofpersonrelatedtoperson1
 public class PersonRelations {
     private int isfriend;//0 if false, 1 if pending, 2 if yes
     private boolean issubscribed;
     private boolean isblocked;
+    private String time;
+
+
+
     private String uid;
     private String username;
     private String userimageurl;
@@ -62,6 +68,15 @@ public class PersonRelations {
         this.uid = uid;
     }
 
+    @PropertyName("time")
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime() {
+        this.time = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+
+    }
     @PropertyName("username")
     public String getUsername() {
         return username;
