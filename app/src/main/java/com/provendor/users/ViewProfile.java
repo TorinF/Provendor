@@ -1,5 +1,6 @@
 package com.provendor.users;
 
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -27,6 +28,7 @@ public class ViewProfile extends AppCompatActivity {
     private FirebaseUser currentViewer;
     private ProfileClass viewedProfile;
     private FirebaseFirestore db;
+    private Resources res;
 
 
     @Override
@@ -37,6 +39,7 @@ public class ViewProfile extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentViewer = mAuth.getCurrentUser();
         db = FirebaseFirestore.getInstance();
+        res = getResources();
         viewedProfile = ProfileList.currentUpload;
 
         TextView userID = findViewById(R.id.UserID1);
@@ -73,7 +76,7 @@ public class ViewProfile extends AppCompatActivity {
                             //TODO: Add unfriend funtion
                             friendBut.setText("Unfriend");
                             //Grey background
-                            friendBut.setBackgroundColor(Color.parseColor("#cccccc"));
+                            friendBut.setBackgroundColor(res.getColor(R.color.button_unfriend));
                             friendBut.setClickable(false);
                         }
 
@@ -94,17 +97,20 @@ public class ViewProfile extends AppCompatActivity {
             if (viewer.equals(viewedUser)) {
                 friendBut.setClickable(false);
                 //Grey color
-                friendBut.setBackgroundColor(Color.parseColor("#cccccc"));
+                friendBut.setBackgroundColor(res.getColor(R.color.button_friend));
                 friendBut.setText("Cannot Friend");
             }
         }
 
+        /*
+         *
+         */
         friendBut.setOnClickListener(
                 new View.OnClickListener() {
                     public void onClick(View v) {
                         final String sender = currentViewer.getUid();
                         final String recipient = viewedProfile.getUser();
-                        Invitation invite = new Invitation(sender, recipient);
+                        final Invitation invite = new Invitation(sender, recipient);
 
 
                         //Extra code to check if a relation exists before setting pending status
@@ -112,13 +118,54 @@ public class ViewProfile extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 DocumentSnapshot document = task.getResult();
+                                PersonRelations relation = document.toObject(PersonRelations.class);
                                 if (document.exists()) {
-                                    relationRef.update("isfriend", PersonRelations.PENDING);
+                                    int isFriend = relation.getIsfriend();
+                                    if (isFriend == PersonRelations.NOTFRIENDS) {
+
+                                        relationRef.update("isfriend", PersonRelations.PENDING);
+                                        //Add notification to reciever node
+                                        //TODO: Change notification object constructor param to relation
+                                        Notification invitenotification = new Notification(invite);
+                                        db.collection("userdata").document(recipient).collection("notifications").document("notifications").collection("notifications").add(invitenotification);
+
+
+                                        DocumentReference RecipientDocument = db.collection("userdata").document(recipient).collection("notifications").document("notifications");
+                                        RecipientDocument.update("unreadInbox", FieldValue.increment(1));
+
+
+                                        //No longer friendable
+                                        friendBut.setText("Pending");
+                                        //Grey background
+                                        friendBut.setBackgroundColor(res.getColor(R.color.button_pending));
+                                    } else if (isFriend == PersonRelations.FRIENDED) {
+
+                                        relationRef.update("isfriend", PersonRelations.NOTFRIENDS);
+                                        //Edit sender's relation node for them
+                                        //TODO:Determine if editing other users node is against database rules
+                                        final DocumentReference friendRelationRef = db.collection("userdata").document(recipient).collection("relations").document(sender);
+                                        final Task<DocumentSnapshot> friendRelation = relationRef.get();
+                                        friendRelation.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                DocumentSnapshot document = task.getResult();
+                                                if (document.exists()) {
+                                                    friendRelationRef.update("isfriend", PersonRelations.NOTFRIENDS);
+                                                }
+                                            }
+                                        });
+
+                                        friendBut.setText("Friend");
+                                        friendBut.setBackgroundColor(res.getColor(R.color.button_friend));
+                                    }
                                 } else {
+                                    //Document doesn't exist (therefore will be friended)
                                     PersonRelations personRelations = new PersonRelations();
                                     personRelations.setUid(recipient);
                                     personRelations.setIsfriend(PersonRelations.PENDING);
                                     relationRef.set(personRelations);
+
+
                                 }
                             }
                         });
@@ -133,15 +180,22 @@ public class ViewProfile extends AppCompatActivity {
                         RecipientDocument.update("unreadInbox", FieldValue.increment(1));
 
 
-                        //No longer friendable
                         friendBut.setText("Pending");
-                        //Grey background
-                        friendBut.setBackgroundColor(Color.parseColor("#cccccc"));
-                        //Can't send more requests
+                        friendBut.setBackgroundColor(res.getColor(R.color.colorAccent));
                         friendBut.setClickable(false);
                     }
                 }
         );
+    }
+
+    public void setFriendButFriend() {
+        friendBut.setText("Friend");
+        friendBut.setBackgroundColor(res.getColor(R.color.button_friend));
+    }
+
+    public void setFriendButUnfriend() {
+        friendBut.setText("Unfriend");
+        friendBut.setBackgroundColor(res.getColor(R.color.button_unfriend));
     }
 
 }
