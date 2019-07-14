@@ -162,7 +162,7 @@ public class PlaceholderFragment extends Fragment {
                     //TODO:logic here to accept/deny FriendRequest.  Send notification to other user with recipients decision (See Notification Class). Delete this notification from user's node when the user clicks on the button.
 
                     final String friendedID = productName.getuseruid();
-                    String userUid = currentUser.getUid();
+                    final String userUid = currentUser.getUid();
 
                     //update relations
 
@@ -184,33 +184,34 @@ public class PlaceholderFragment extends Fragment {
                         }
                     });
 
-                    //Edit sender's relation node for them
+                    //Edit sender's relation node for them & send notification
                     //TODO:Determine if editing other users node is against database rules
                     final DocumentReference friendRelationRef = db.collection("userdata").document(friendedID).collection("relations").document(userUid);
-                    final Task<DocumentSnapshot> friendRelation = relationRef.get();
+                    final Task<DocumentSnapshot> friendRelation = friendRelationRef.get();
                     friendRelation.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             DocumentSnapshot document = task.getResult();
+                            PersonRelations relation;
                             if (document.exists()) {
+                                relation = document.toObject(PersonRelations.class);
                                 friendRelationRef.update("isfriend", PersonRelations.FRIENDED);
                             } else {
-                                PersonRelations personRelations = new PersonRelations();
-                                personRelations.setUid(friendedID);
-                                personRelations.setIsfriend(PersonRelations.FRIENDED);
-                                friendRelationRef.set(personRelations);
+                                relation = new PersonRelations();
+                                relation.setUid(friendedID);
+                                relation.setIsfriend(PersonRelations.FRIENDED);
+                                friendRelationRef.set(relation);
                             }
+                            //Create notification
+                            Notification notification = new Notification("friend", relation);
+
+                            //Send notification
+                            db.collection("userdata").document(friendedID).collection("notifications").document("notifications").collection("notifications").add(notification);
+                            DocumentReference RecipientDocument = db.collection("userdata").document(friendedID).collection("notifications").document("notifications");
+                            RecipientDocument.update("unreadInbox", FieldValue.increment(1));
+
                         }
                     });
-
-                    //Create notification
-                    String message = userUid + " has accepted your friend request";
-                    Notification notification = new Notification(message, userUid, "accept");
-
-                    //Send notification
-                    db.collection("userdata").document(friendedID).collection("notifications").document("notifications").collection("notifications").add(notification);
-                    DocumentReference RecipientDocument = db.collection("userdata").document(friendedID).collection("notifications").document("notifications");
-                    RecipientDocument.update("unreadInbox", FieldValue.increment(1));
 
                     //Toast code
                     Context context = getContext();
@@ -227,19 +228,28 @@ public class PlaceholderFragment extends Fragment {
                 @Override
                 public void onClick(android.view.View view) {
 
-                    String friended = productName.getuseruid();
+                    final String rejecteduid = productName.getuseruid();
                     String sender = currentUser.getUid();
 
-                    //Create notification
-                    String message = sender + " has declined your friend request";
-                    Notification notification = new Notification(message, sender, "reject");
-
-                    //Send notification
-                    db.collection("userdata").document(friended).collection("notifications").document("notifications").collection("notifications").add(notification);
-                    DocumentReference RecipientDocument = db.collection("userdata").document(friended).collection("notifications").document("notifications");
-                    RecipientDocument.update("unreadInbox", FieldValue.increment(1));
+                    final DocumentReference friendRelationRef = db.collection("userdata").document(rejecteduid).collection("relations").document(sender);
+                    final Task<DocumentSnapshot> friendRelation = friendRelationRef.get();
+                    friendRelation.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot document = task.getResult();
+                            PersonRelations relation;
+                            if (document.exists()) {
+                                relation = document.toObject(PersonRelations.class);
+                                friendRelationRef.update("isfriend", PersonRelations.FRIENDED);
+                            } else {
+                                relation = new PersonRelations();
+                                relation.setUid(rejecteduid);
+                                relation.setIsfriend(PersonRelations.FRIENDED);
+                                friendRelationRef.set(relation);
+                            }
+                        }
+                    });
                 }
-
             });
             meme(productName);
 
