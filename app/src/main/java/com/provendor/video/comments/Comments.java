@@ -2,7 +2,12 @@ package com.provendor.video.comments;
 
 import com.google.firebase.firestore.PropertyName;
 
+import java.util.Calendar;
+
 public class Comments {
+
+
+    private String time;
     private int likes;
     private int dislikes;
     private String message;
@@ -31,6 +36,17 @@ public class Comments {
 
     public void setDislikes(int dislikes) {
         this.dislikes = dislikes;
+    }
+
+    @PropertyName("time")
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime() {
+        this.time = java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
+
     }
 
     @PropertyName("message")

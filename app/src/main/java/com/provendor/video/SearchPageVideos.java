@@ -20,7 +20,7 @@ public class SearchPageVideos extends AppCompatActivity {
 
     private static final String ALGOLIA_APP_ID = "AK3H70NKN5";
     private static final String ALGOLIA_SEARCH_API_KEY = "2c8a8880eff5c3664adaa84af4b2bfad";
-    private static final String ALGOLIA_INDEX_NAME = "�com.provendor�";
+    private static final String ALGOLIA_INDEX_NAME = "�Provendor�";
     public static String query;
     public static boolean comingfromother = false;
     private Searcher searcher;
