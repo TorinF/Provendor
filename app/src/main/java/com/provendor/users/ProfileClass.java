@@ -115,7 +115,7 @@ public class ProfileClass {
         return gold;
     }
 
-    public void setVuestions(int questions) {
+    public void setQuestions(int questions) {
         this.questions = questions;
     }
 
