@@ -4,6 +4,7 @@ package com.provendor.ui.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -25,6 +26,13 @@ public class Missions extends AppCompatActivity {
 //    mission2 = "Get 10 followers!";
 //    mission4 = "Post 1 video of your plant!";
 //    mission5 = "Have 100 Gold!";
+
+    private static int currentLevel;
+    private static boolean isMission1Done;
+    private static boolean isMission2Done;
+    private static boolean isMission3Done;
+    private static boolean isMission4Done;
+    private static boolean isMission5Done;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +63,9 @@ public class Missions extends AppCompatActivity {
         //accessing FireBase for user data
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        final FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        if (currentUser != null)
-        {
+        if (currentUser != null) {
             DocumentReference docRef = db.collection("userdata").document(currentUser.getUid());
             docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
@@ -85,6 +92,16 @@ public class Missions extends AppCompatActivity {
                                 Toast.LENGTH_LONG).show();
                     }
 
+                    //check if lvl changed
+                    if (lvl != currentLevel)
+                    {
+                        currentLevel = lvl;
+                        isMission1Done = false;
+                        isMission2Done = false;
+                        isMission3Done = false;
+                        isMission4Done = false;
+                        isMission5Done = false;
+                    }
 
                     //mission requirements
                     int friendReq = lvl * 3;
@@ -92,7 +109,6 @@ public class Missions extends AppCompatActivity {
                     int followerReq = lvl * 10;
                     //int vidReq = lvl;
                     int goldReq = lvl * 100;
-
 
                     //set mission instructions
                     mission1Text.setText("Get " + friendReq + " friends!");
@@ -103,34 +119,116 @@ public class Missions extends AppCompatActivity {
                     else
                         mission4Text.setText("Post" + lvl + "videos of your plant!");
                     mission5Text.setText("Have" + goldReq + "Gold!");
-                    
-                    //set mission progress text
-                    mission1Progress.setText(friends + "/" + friendReq);
-                    mission2Progress.setText(questions + "/" + questionReq);
-                    mission3Progress.setText(followers + "/" + followerReq);
-                    mission4Progress.setText(vids + "/" + lvl);
-                    mission5Progress.setText(gold + "/" + goldReq);
 
-                    //set progress bars for each mission
-                    progressBar1.setProgress(friends);
+                    //set progress bar maxes
                     progressBar1.setMax(friendReq);
-
-                    progressBar2.setProgress(questions);
                     progressBar2.setMax(questionReq);
-
-                    progressBar3.setProgress(followers);
                     progressBar3.setMax(followerReq);
-
-                    progressBar4.setProgress(vids);
                     progressBar4.setMax(lvl);
-
-                    progressBar5.setProgress(gold);
                     progressBar5.setMax(goldReq);
+
+                    //default mission status is complete
+                    mission1Progress.setTextColor(Color.GREEN);
+                    mission2Progress.setTextColor(Color.GREEN);
+                    mission3Progress.setTextColor(Color.GREEN);
+                    mission4Progress.setTextColor(Color.GREEN);
+                    mission5Progress.setTextColor(Color.GREEN);
+
+                    mission1Progress.setText(friendReq + "/" + friendReq);
+                    mission2Progress.setText(questionReq + "/" + questionReq);
+                    mission3Progress.setText(followerReq + "/" + followerReq);
+                    mission4Progress.setText(lvl + "/" + lvl);
+                    mission5Progress.setText(goldReq + "/" + goldReq);
+
+                    progressBar1.setProgress(friendReq);
+                    progressBar2.setProgress(questionReq);
+                    progressBar3.setProgress(followerReq);
+                    progressBar4.setProgress(lvl);
+                    progressBar5.setProgress(goldReq);
+
+
+                    if (!isMission1Done) {
+                        mission1Progress.setTextColor(Color.BLACK);
+                        mission1Progress.setText(friends + "/" + friendReq);
+                        progressBar1.setProgress(friends);
+
+                        if (friendReq == friends) {
+                            mission1Progress.setTextColor(Color.GREEN);
+                            isMission1Done = true;
+                            profile.setxp(profile.getXp() + 100);
+                            profile.setgold(profile.getGold() + 50);
+                            Toast.makeText(Missions.this, "Congrats, Mission Complete! You have received 100 XP and 50 gold.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    if (!isMission2Done)
+                    {
+                        mission2Progress.setTextColor(Color.BLACK);
+                        mission2Progress.setText(questions + "/" + questionReq);
+                        progressBar2.setProgress(questions);
+
+                        if (questionReq == questions) {
+                            mission2Progress.setTextColor(Color.GREEN);
+                            isMission2Done = true;
+                            profile.setxp(profile.getXp() + 100);
+                            profile.setgold(profile.getGold() + 50);
+                            Toast.makeText(Missions.this, "Congrats, Mission Complete! You have received 100 XP and 50 gold.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    if (!isMission3Done)
+                    {
+                        mission3Progress.setTextColor(Color.BLACK);
+                        mission3Progress.setText(followers + "/" + followerReq);
+                        progressBar3.setProgress(followers);
+
+                        if (followerReq == followers) {
+                            mission3Progress.setTextColor(Color.GREEN);
+                            isMission3Done = true;
+                            profile.setxp(profile.getXp() + 100);
+                            profile.setgold(profile.getGold() + 50);
+                            Toast.makeText(Missions.this, "Congrats, Mission Complete! You have received 100 XP and 50 gold.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    if (!isMission4Done)
+                    {
+                        mission4Progress.setTextColor(Color.BLACK);
+                        mission4Progress.setText(vids + "/" + lvl);
+                        progressBar4.setProgress(vids);
+
+                        if (lvl == vids) {
+                            mission4Progress.setTextColor(Color.GREEN);
+                            isMission4Done = true;
+                            profile.setxp(profile.getXp() + 100);
+                            profile.setgold(profile.getGold() + 50);
+                            Toast.makeText(Missions.this, "Congrats, Mission Complete! You have received 100 XP and 50 gold.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    if (!isMission5Done)
+                    {
+                        mission5Progress.setTextColor(Color.BLACK);
+                        mission5Progress.setText(gold + "/" + goldReq);
+                        progressBar5.setProgress(gold);
+
+                        if (goldReq == gold) {
+                            mission5Progress.setTextColor(Color.GREEN);
+                            isMission5Done = true;
+                            profile.setxp(profile.getXp() + 100);
+                            profile.setgold(profile.getGold() + 50);
+                            Toast.makeText(Missions.this, "Congrats, Mission Complete! You have received 100 XP and 50 gold.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }
+
             });
-        }
-        else
-        {
+        } else {
             //send user to sign in screen
         }
     }
