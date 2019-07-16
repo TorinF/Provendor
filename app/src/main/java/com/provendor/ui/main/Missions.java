@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,8 +19,6 @@ import com.provendor.R;
 import com.provendor.users.ProfileClass;
 
 public class Missions extends AppCompatActivity {
-    private FirebaseAuth mAuth;
-
     //default missions
 //    mission1 = "Get 3 friends!";
 //    mission3 = "Answer 5 questions!";
@@ -54,10 +53,10 @@ public class Missions extends AppCompatActivity {
         final ProgressBar progressBar5 = findViewById(R.id.ProgressBar5);
 
         //accessing FireBase for user data
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
         if (currentUser != null)
         {
             DocumentReference docRef = db.collection("userdata").document(currentUser.getUid());
@@ -66,7 +65,26 @@ public class Missions extends AppCompatActivity {
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     ProfileClass profile = documentSnapshot.toObject(ProfileClass.class);
 
-                    int lvl = profile.getLevel();
+                    int lvl = 0;
+                    int friends = 0;
+                    int questions = 0;
+                    int followers = 0;
+                    int vids = 0;
+                    int gold = 0;
+
+                    try {
+                        lvl = profile.getLevel();
+                        friends = profile.getFriends();
+                        questions = profile.getQuestions();
+                        followers = profile.getFollowers();
+                        vids = profile.getVids();
+                        gold = profile.getGold();
+                    }
+                    catch (NullPointerException nullptr) {
+                        Toast.makeText(Missions.this, "Error: Null value detected.",
+                                Toast.LENGTH_LONG).show();
+                    }
+
 
                     //mission requirements
                     int friendReq = lvl * 3;
@@ -85,28 +103,28 @@ public class Missions extends AppCompatActivity {
                     else
                         mission4Text.setText("Post" + lvl + "videos of your plant!");
                     mission5Text.setText("Have" + goldReq + "Gold!");
-
+                    
                     //set mission progress text
-                    mission1Progress.setText(profile.getFriends() + "/" + friendReq);
-                    mission2Progress.setText(profile.getQuestions() + "/" + questionReq);
-                    mission3Progress.setText(profile.getFollowers() + "/" + followerReq);
-                    mission4Progress.setText(profile.getVids() + "/" + lvl);
-                    mission5Progress.setText(profile.getGold() + "/" + goldReq);
+                    mission1Progress.setText(friends + "/" + friendReq);
+                    mission2Progress.setText(questions + "/" + questionReq);
+                    mission3Progress.setText(followers + "/" + followerReq);
+                    mission4Progress.setText(vids + "/" + lvl);
+                    mission5Progress.setText(gold + "/" + goldReq);
 
                     //set progress bars for each mission
-                    progressBar1.setProgress(profile.getFriends());
+                    progressBar1.setProgress(friends);
                     progressBar1.setMax(friendReq);
 
-                    progressBar2.setProgress(profile.getQuestions());
+                    progressBar2.setProgress(questions);
                     progressBar2.setMax(questionReq);
 
-                    progressBar3.setProgress(profile.getFollowers());
+                    progressBar3.setProgress(followers);
                     progressBar3.setMax(followerReq);
 
-                    progressBar4.setProgress(profile.getVids());
+                    progressBar4.setProgress(vids);
                     progressBar4.setMax(lvl);
 
-                    progressBar5.setProgress(profile.getGold());
+                    progressBar5.setProgress(gold);
                     progressBar5.setMax(goldReq);
                 }
             });
