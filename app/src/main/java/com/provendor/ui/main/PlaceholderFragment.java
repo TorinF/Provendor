@@ -24,7 +24,9 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -35,6 +37,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.provendor.R;
 import com.provendor.users.Notification;
+import com.provendor.users.PersonRelations;
 import com.provendor.users.ProfileClass;
 import com.provendor.users.ProfileList;
 import com.provendor.users.ViewProfile;
@@ -148,32 +151,69 @@ public class PlaceholderFragment extends Fragment {
             textViewy.setText(String.valueOf(productName.getuseruid()));
             Button buttonaccept = view.findViewById(R.id.button6);
             Button buttondeny = view.findViewById(R.id.button7);
+
             if (productName.gettype().equals("friendReq")) {
                 buttonaccept.setVisibility(View.VISIBLE);
                 buttondeny.setVisibility(View.VISIBLE);
             }
             buttonaccept.setOnClickListener(new android.view.View.OnClickListener() {
                 @Override
-                public void onClick(android.view.View view) {
-                    //TODO:logic here to accept/deny FriendRequest. Delete pending and invitations node, and add each other to userdata/useruid/friends node if they become friends. Send notification to other user with recipients decision (See Notification Class). Delete this notification from user's node when the user clicks on the button.
+                public void onClick(View view) {
+                    //TODO:logic here to accept/deny FriendRequest.  Send notification to other user with recipients decision (See Notification Class). Delete this notification from user's node when the user clicks on the button.
 
-                    String friended = productName.getuseruid();
-                    String sender = currentUser.getUid();
+                    final String friendedID = productName.getuseruid();
+                    final String userUid = currentUser.getUid();
 
-                    //Delete pending nodes
-                    db.collection("userdata").document(sender).collection("requests").document(friended).delete();
-                    db.collection("userdata").document(friended).collection("pending").document(sender).delete();
+                    //update relations
 
-                    //Create notification
-                    String message = sender + " has accepted your friend request";
-                    Notification notification = new Notification(message, sender, "accept");
+                    //Set accepted user relation to friends
+                    final DocumentReference relationRef =  db.collection("userdata").document(userUid).collection("relations").document(friendedID);
+                    final Task<DocumentSnapshot> relation = relationRef.get();
+                    relation.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                relationRef.update("isfriend", PersonRelations.FRIENDED);
+                            } else {
+                                PersonRelations personRelations = new PersonRelations();
+                                personRelations.setUid(friendedID);
+                                personRelations.setIsfriend(PersonRelations.FRIENDED);
+                                relationRef.set(personRelations);
+                            }
+                        }
+                    });
 
-                    //Send notification
-                    db.collection("userdata").document(friended).collection("notifications").document("notifications").collection("notifications").add(notification);
+                    //Edit sender's relation node for them & send notification
+                    //TODO:Determine if editing other users node is against database rules
+                    final DocumentReference friendRelationRef = db.collection("userdata").document(friendedID).collection("relations").document(userUid);
+                    final Task<DocumentSnapshot> friendRelation = friendRelationRef.get();
+                    friendRelation.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot document = task.getResult();
+                            PersonRelations relation;
+                            if (document.exists()) {
+                                relation = document.toObject(PersonRelations.class);
+                                friendRelationRef.update("isfriend", PersonRelations.FRIENDED);
+                            } else {
+                                relation = new PersonRelations();
+                                relation.setUid(friendedID);
+                                relation.setIsfriend(PersonRelations.FRIENDED);
+                                friendRelationRef.set(relation);
+                            }
+                            //Create notification
+                            Notification notification = new Notification("friend", relation);
 
-                    DocumentReference RecipientDocument = db.collection("userdata").document(friended).collection("notifications").document("notifications");
-                    RecipientDocument.update("unreadInbox", FieldValue.increment(1));
+                            //Send notification
+                            db.collection("userdata").document(friendedID).collection("notifications").document("notifications").collection("notifications").add(notification);
+                            DocumentReference RecipientDocument = db.collection("userdata").document(friendedID).collection("notifications").document("notifications");
+                            RecipientDocument.update("unreadInbox", FieldValue.increment(1));
 
+                        }
+                    });
+
+                    //Toast code
                     Context context = getContext();
                     CharSequence text = "You Clicked on the button!";
                     int duration = Toast.LENGTH_SHORT;
@@ -187,25 +227,29 @@ public class PlaceholderFragment extends Fragment {
             buttondeny.setOnClickListener(new android.view.View.OnClickListener() {
                 @Override
                 public void onClick(android.view.View view) {
-                    //TODO: delete pending nodes, notify rejection
 
-                    String friended = productName.getuseruid();
+                    final String rejecteduid = productName.getuseruid();
                     String sender = currentUser.getUid();
 
-                    //Delete pending nodes
-                    db.collection("userdata").document(sender).collection("requests").document(friended).delete();
-                    db.collection("userdata").document(friended).collection("pending").document(sender).delete();
-
-                    //Create notification
-                    String message = sender + " has declined your friend request";
-                    Notification notification = new Notification(message, sender, "reject");
-
-                    //Send notification
-                    db.collection("userdata").document(friended).collection("notifications").document("notifications").collection("notifications").add(notification);
-                    DocumentReference RecipientDocument = db.collection("userdata").document(friended).collection("notifications").document("notifications");
-                    RecipientDocument.update("unreadInbox", FieldValue.increment(1));
+                    final DocumentReference friendRelationRef = db.collection("userdata").document(rejecteduid).collection("relations").document(sender);
+                    final Task<DocumentSnapshot> friendRelation = friendRelationRef.get();
+                    friendRelation.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot document = task.getResult();
+                            PersonRelations relation;
+                            if (document.exists()) {
+                                relation = document.toObject(PersonRelations.class);
+                                friendRelationRef.update("isfriend", PersonRelations.FRIENDED);
+                            } else {
+                                relation = new PersonRelations();
+                                relation.setUid(rejecteduid);
+                                relation.setIsfriend(PersonRelations.FRIENDED);
+                                friendRelationRef.set(relation);
+                            }
+                        }
+                    });
                 }
-
             });
             meme(productName);
 

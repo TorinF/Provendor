@@ -5,5 +5,7 @@
     <color name="colorAccent">#cccccc</color>
 
     <color name="black_overlay">#cccccc</color>
-    
+    <color name="button_friend">#1F7EC7</color>
+    <color name="button_unfriend">#E24646</color>
+    <color name="button_pending">#969494</color>
 </resources>
