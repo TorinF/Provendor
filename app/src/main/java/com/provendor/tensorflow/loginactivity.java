@@ -23,6 +23,8 @@ import com.provendor.users.Inbox;
 import com.provendor.users.Profile;
 import com.provendor.users.ProfileClass;
 
+import java.util.HashMap;
+
 
 public class loginactivity extends AppCompatActivity {
 
@@ -137,7 +139,7 @@ public class loginactivity extends AppCompatActivity {
                                 db = FirebaseFirestore.getInstance();
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 uid = user.getUid();
-                                newUser = new ProfileClass(uid, 0, 0, "", null, 0, 0, 0, 1, 0);
+                                newUser = new ProfileClass(uid, 0, 0, "", null, 0, 0, 0, 1, 0, new HashMap<String, Object>());
                                 Inbox newInbox = new Inbox();
                                 FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification();
 

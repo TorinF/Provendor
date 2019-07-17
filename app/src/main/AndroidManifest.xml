@@ -20,7 +20,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.main.Missions"></activity>
+        <activity android:name=".ui.main.Store"></activity>
+        <activity android:name=".ui.main.Missions" />
         <activity
             android:name=".users.Inboxandmessages"
             android:label="@string/title_activity_inboxandmessages"

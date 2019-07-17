@@ -155,8 +155,8 @@ public class Missions extends AppCompatActivity {
                         if (friendReq == friends) {
                             mission1Progress.setTextColor(Color.GREEN);
                             isMission1Done = true;
-                            profile.setxp(profile.getXp() + 100);
-                            profile.setgold(profile.getGold() + 50);
+                            profile.setXP(profile.getXp() + 100);
+                            profile.setGold(profile.getGold() + 50);
                             Toast.makeText(Missions.this, "Congrats, Mission Complete! You have received 100 XP and 50 gold.",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -171,8 +171,8 @@ public class Missions extends AppCompatActivity {
                         if (questionReq == questions) {
                             mission2Progress.setTextColor(Color.GREEN);
                             isMission2Done = true;
-                            profile.setxp(profile.getXp() + 100);
-                            profile.setgold(profile.getGold() + 50);
+                            profile.setXP(profile.getXp() + 100);
+                            profile.setGold(profile.getGold() + 50);
                             Toast.makeText(Missions.this, "Congrats, Mission Complete! You have received 100 XP and 50 gold.",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -187,8 +187,8 @@ public class Missions extends AppCompatActivity {
                         if (followerReq == followers) {
                             mission3Progress.setTextColor(Color.GREEN);
                             isMission3Done = true;
-                            profile.setxp(profile.getXp() + 100);
-                            profile.setgold(profile.getGold() + 50);
+                            profile.setXP(profile.getXp() + 100);
+                            profile.setGold(profile.getGold() + 50);
                             Toast.makeText(Missions.this, "Congrats, Mission Complete! You have received 100 XP and 50 gold.",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -203,8 +203,8 @@ public class Missions extends AppCompatActivity {
                         if (lvl == vids) {
                             mission4Progress.setTextColor(Color.GREEN);
                             isMission4Done = true;
-                            profile.setxp(profile.getXp() + 100);
-                            profile.setgold(profile.getGold() + 50);
+                            profile.setXP(profile.getXp() + 100);
+                            profile.setGold(profile.getGold() + 50);
                             Toast.makeText(Missions.this, "Congrats, Mission Complete! You have received 100 XP and 50 gold.",
                                     Toast.LENGTH_SHORT).show();
                         }
@@ -219,8 +219,8 @@ public class Missions extends AppCompatActivity {
                         if (goldReq == gold) {
                             mission5Progress.setTextColor(Color.GREEN);
                             isMission5Done = true;
-                            profile.setxp(profile.getXp() + 100);
-                            profile.setgold(profile.getGold() + 50);
+                            profile.setXP(profile.getXp() + 100);
+                            profile.setGold(profile.getGold() + 50);
                             Toast.makeText(Missions.this, "Congrats, Mission Complete! You have received 100 XP and 50 gold.",
                                     Toast.LENGTH_SHORT).show();
                         }
