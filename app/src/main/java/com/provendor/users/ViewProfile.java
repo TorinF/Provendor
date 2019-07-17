@@ -77,7 +77,7 @@ public class ViewProfile extends AppCompatActivity {
                             friendBut.setText("Unfriend");
                             //Grey background
                             friendBut.setBackgroundColor(res.getColor(R.color.button_unfriend));
-                            friendBut.setClickable(false);
+                            friendBut.setClickable(true);
                         }
 
                     }
