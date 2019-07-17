@@ -73,6 +73,7 @@ public class VideoView extends AppCompatActivity {
     private ToggleButton like;
     private ToggleButton dislike;
     private EditText comment;
+    private VideoRelations stuff;
 
 
     @Override
@@ -111,31 +112,41 @@ public class VideoView extends AppCompatActivity {
         index.addObjectAsync(person, null);
         like = findViewById(R.id.likeTogs);
         dislike = findViewById(R.id.disTog);
-
+        if(stuff.getIsliked()){
+            like.setChecked(true);
+        }
+        if(stuff.getIsdisliked()){
+            dislike.setChecked(true);
+        }
         like.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
+                if (b && !stuff.getIsliked() && !stuff.getIsdisliked()) {
                     if (currentUpload.getLikes() >= currentUpload.getDislikes()) {
                         currentUpload.setLikes(currentUpload.getLikes() + 1);
+
                     } else {
                         currentUpload.setDislikes(currentUpload.getDislikes() - 1);
                     }
                     dislike.setChecked(false);
+                    stuff.setIsliked(true);
+                    stuff.setIsdisliked(false);
                 }
             }
         });
-
         dislike.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
+                if (b && !stuff.getIsliked() && !stuff.getIsdisliked()) {
                     if (currentUpload.getDislikes() >= currentUpload.getLikes()) {
                         currentUpload.setDislikes(currentUpload.getDislikes() + 1);
+
                     } else {
                         currentUpload.setLikes(currentUpload.getLikes() - 1);
                     }
                     like.setChecked(false);
+                    stuff.setIsdisliked(true);
+                    stuff.setIsliked(false);
                 }
             }
         });

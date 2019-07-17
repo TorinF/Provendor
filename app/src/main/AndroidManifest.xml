@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,30 +20,32 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.main.Store"></activity>
+        <activity android:name=".ui.main.Missions" />
         <activity
-            android:name="com.provendor.users.Inboxandmessages"
+            android:name=".users.Inboxandmessages"
             android:label="@string/title_activity_inboxandmessages"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="com.provendor.users.InboxImage" />
-        <activity android:name="com.provendor.users.ViewProfile" />
-        <activity android:name="com.provendor.users.ProfileList" />
-        <activity android:name="com.provendor.questionForum.Questions" />
-        <activity android:name="com.provendor.video.SearchPageVideos" />
-        <activity android:name="com.provendor.users.Profile" />
-        <activity android:name="com.provendor.video.Videolists" />
-        <activity android:name="com.provendor.video.Changename" />
-        <activity android:name="com.provendor.video.UploadVideo" />
-        <activity android:name="com.provendor.video.VideoView" />
+        <activity android:name=".users.InboxImage" />
+        <activity android:name=".users.ViewProfile" />
+        <activity android:name=".users.ProfileList" />
+        <activity android:name=".questionForum.Questions" />
+        <activity android:name=".video.SearchPageVideos" />
+        <activity android:name=".users.Profile" />
+        <activity android:name=".video.Videolists" />
+        <activity android:name=".video.Changename" />
+        <activity android:name=".video.UploadVideo" />
+        <activity android:name=".video.VideoView" />
         <activity
-            android:name="com.provendor.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme" />
         <activity
-            android:name="com.provendor.diagnosis.Diagnosis"
+            android:name=".diagnosis.Diagnosis"
             android:label="@string/app_name"
             android:theme="@style/AppTheme" />
         <activity
-            android:name="com.provendor.diagnosis.DiagnosisClick"
+            android:name=".diagnosis.DiagnosisClick"
             android:label="@string/app_name"
             android:theme="@style/AppTheme" />
         <activity
@@ -54,7 +57,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             tools:replace="android:launchMode" />
         <activity
-            android:name="com.provendor.tensorflow.loginactivity"
+            android:name=".tensorflow.loginactivity"
             android:label="@string/app_name"
             android:theme="@style/splashScreenTheme">
             <intent-filter>
@@ -64,10 +67,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.provendor.tensorflow.LoginActivity2"
+            android:name=".tensorflow.LoginActivity2"
             android:label="@string/app_name"
             android:theme="@style/AppTheme" />
-        <activity android:name="com.provendor.diagnosis.Diseaselist" />
+        <activity android:name=".diagnosis.Diseaselist" />
     </application>
 
 </manifest>

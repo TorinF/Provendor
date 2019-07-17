@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/storeBG"
+    tools:context=".ui.main.Store">
+
+    <EditText
+        android:id="@+id/ChangeUserText"
+        android:layout_width="286dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="CHANGE USERNAME  - 100 GOLD"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ChangeUserButton" />
+
+    <ImageView
+        android:id="@+id/XPBoostButton"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/increase" />
+
+    <ImageView
+        android:id="@+id/ChangeUserButton"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginTop="120dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/XPBoostButton"
+        app:srcCompat="@drawable/changeUser" />
+
+    <ImageView
+        android:id="@+id/ChangePicButton"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="140dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ChangeUserButton"
+        app:srcCompat="@drawable/person" />
+
+    <ImageView
+        android:id="@+id/PencilAddOn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="56dp"
+        android:clickable="false"
+        app:layout_constraintStart_toStartOf="@+id/ChangePicButton"
+        app:layout_constraintTop_toTopOf="@+id/ChangePicButton"
+        app:srcCompat="@drawable/pencil" />
+
+    <EditText
+        android:id="@+id/XPBoostLabel"
+        android:layout_width="238dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="200% XP BOOST - 200 GOLD"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/XPBoostButton" />
+
+    <EditText
+        android:id="@+id/ChangePicLabel"
+        android:layout_width="340dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="CHANGE PROFILE PICTURE  - 100 GOLD"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ChangePicButton" />
+
+    <TextView
+        android:id="@+id/Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="The Store"
+        android:textColor="@color/colorHighlighting"
+        android:textSize="50sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ChangePicLabel" />
+
+    <TextView
+        android:id="@+id/GoldLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gold: 0"
+        android:textColor="@color/colorSuggestions"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/XPBoostLabel"
+        app:layout_constraintTop_toTopOf="@+id/XPBoostButton" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

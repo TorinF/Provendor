@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.Missions">
+
+
+    <TextView
+        android:id="@+id/missionTitle"
+        android:layout_width="411dp"
+        android:layout_height="wrap_content"
+        android:text="Missions"
+        android:textAlignment="center"
+        android:textSize="36sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/Mission1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="Get 3 friends!"
+        android:textSize="17sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/missionTitle" />
+
+    <TextView
+        android:id="@+id/Mission2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Answer 5 questions!"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/Mission1"
+        app:layout_constraintTop_toBottomOf="@+id/ProgressBar1" />
+
+    <TextView
+        android:id="@+id/Mission3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Get 10 followers!"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/Mission1"
+        app:layout_constraintTop_toBottomOf="@+id/ProgressBar2" />
+
+    <TextView
+        android:id="@+id/Mission4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Post 1 video of your plant!"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/Mission1"
+        app:layout_constraintTop_toBottomOf="@+id/ProgressBar3" />
+
+    <TextView
+        android:id="@+id/Mission5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Have 100 Gold!"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/Mission1"
+        app:layout_constraintTop_toBottomOf="@+id/ProgressBar4" />
+
+    <ProgressBar
+        android:id="@+id/ProgressBar1"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="300sp"
+        android:layout_height="40sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@+id/Mission1"
+        app:layout_constraintTop_toBottomOf="@+id/Mission1" />
+
+    <ProgressBar
+        android:id="@+id/ProgressBar2"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="300sp"
+        android:layout_height="40sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@+id/Mission1"
+        app:layout_constraintTop_toBottomOf="@+id/Mission2" />
+
+    <ProgressBar
+        android:id="@+id/ProgressBar3"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="300sp"
+        android:layout_height="40sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@+id/Mission1"
+        app:layout_constraintTop_toBottomOf="@+id/Mission3" />
+
+    <ProgressBar
+        android:id="@+id/ProgressBar4"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="300sp"
+        android:layout_height="40sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@+id/Mission1"
+        app:layout_constraintTop_toBottomOf="@+id/Mission4" />
+
+    <ProgressBar
+        android:id="@+id/ProgressBar5"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="300sp"
+        android:layout_height="40sp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@+id/Mission1"
+        app:layout_constraintTop_toBottomOf="@+id/Mission5" />
+
+    <TextView
+        android:id="@+id/goldProgress"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:layout_marginStart="24dp"
+        android:gravity="center"
+        android:text="0/3"
+        app:layout_constraintStart_toEndOf="@+id/ProgressBar5"
+        app:layout_constraintTop_toBottomOf="@+id/Mission5" />
+
+    <TextView
+        android:id="@+id/vidProgress"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:layout_marginStart="24dp"
+        android:gravity="center"
+        android:text="0/3"
+        app:layout_constraintStart_toEndOf="@+id/ProgressBar4"
+        app:layout_constraintTop_toBottomOf="@+id/Mission4" />
+
+    <TextView
+        android:id="@+id/questionProgress"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:layout_marginStart="24dp"
+        android:gravity="center"
+        android:text="0/3"
+        app:layout_constraintStart_toEndOf="@+id/ProgressBar3"
+        app:layout_constraintTop_toBottomOf="@+id/Mission3" />
+
+    <TextView
+        android:id="@+id/followerProgress"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:layout_marginStart="24dp"
+        android:gravity="center"
+        android:text="0/3"
+        app:layout_constraintStart_toEndOf="@+id/ProgressBar2"
+        app:layout_constraintTop_toBottomOf="@+id/Mission2" />
+
+    <TextView
+        android:id="@+id/friendProgress"
+        android:layout_width="50sp"
+        android:layout_height="50sp"
+        android:layout_marginStart="24dp"
+        android:gravity="center"
+        android:text="0/3"
+        app:layout_constraintStart_toEndOf="@+id/ProgressBar1"
+        app:layout_constraintTop_toTopOf="@+id/ProgressBar1" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
