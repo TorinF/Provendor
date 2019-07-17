@@ -1,4 +1,4 @@
-package com.provendor.ui.main.Items;
+package com.provendor.ui.main.items;
 
 public class XPBoost
 {

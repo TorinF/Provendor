@@ -1,6 +1,7 @@
 package com.provendor.ui.main;
 
 import android.app.AlertDialog;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -9,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -18,13 +18,22 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.UploadTask;
 import com.provendor.R;
-import com.provendor.ui.main.Items.XPBoost;
+import com.provendor.ui.main.items.XPBoost;
 import com.provendor.users.ProfileClass;
+import com.provendor.utils.PicUtils;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.HashMap;
 
-public class Store extends AppCompatActivity {
+public class Store extends PicUtils {
+    public static final int PICK_IMAGE = 1;
+    public static final String VIDEO_DIRECTORY = "/demonuts";
+    public CropImageView cropImageView;
+    public Uri contentURI;
+    public ImageView imagevi;
+    public UploadTask mUploadTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,38 +161,19 @@ public class Store extends AppCompatActivity {
                                 picSelect.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        dialog.dismiss();
-
-
-
-                                        profile.setGold(profile.getGold() - PICCOST);
+                                        openFileChooser();
                                     }
                                 });
 
                                 changeButton.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        dialog.dismiss();
-
-                                        //let user choose picture from camera roll
-                                        //https://stackoverflow.com/questions/31218928/how-can-i-access-the-camera-roll-photos-on-android
-                                        /*
-                                            public void pickUser(View view) {
-                                                Intent intent;
-
-                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                                                    intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                                                    intent.addCategory(Intent.CATEGORY_OPENABLE);
-                                                } else {
-                                                    intent = new Intent(Intent.ACTION_GET_CONTENT);
-                                                }
-
-                                                intent.setType("image/*");
-                                                startActivityForResult(intent, 3645);
-                                            }
-                                         */
-
-                                        profile.setGold(profile.getGold() - PICCOST);
+                                        if (mUploadTask != null && mUploadTask.isInProgress()) {
+                                            Toast.makeText(Store.this, "Upload in progress", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            uploadFile();
+                                            profile.setGold(profile.getGold() - PICCOST);
+                                        }
                                     }
                                 });
 
@@ -203,8 +193,12 @@ public class Store extends AppCompatActivity {
                     });
                 }
             });
-        } else {
+        }
+        else
+        {
             //send to sign-in screen
         }
     }
+
+
 }
